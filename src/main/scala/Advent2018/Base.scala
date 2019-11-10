@@ -3,7 +3,6 @@ package Advent2018
 import java.io.{File, FileNotFoundException}
 
 import scala.collection.immutable.Map
-import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.language.implicitConversions
 
@@ -13,14 +12,14 @@ trait Library {
 
   def time[R](block: => R): R = {
     val t0 = System.nanoTime()
-    block thenDo { _ =>
+    try block finally {
       val t1 = System.nanoTime()
       (t1 - t0).print("Time: ")
     }
   }
 
   implicit class RichAny[T](x: T) {
-    @inline def thenDo(f: T => Unit): T = try x finally f(x)
+    @inline def thenDo(f: T => Unit): T = { f(x) ; x }
 
     // def thenDo[Unit](f: PartialFunction[T, Unit]): T = try x finally if (f isDefinedAt x) f(x)
 
@@ -39,17 +38,17 @@ trait Library {
 
   implicit class RichDefaultMap[K, V](m: Map.WithDefault[K, V]) {
     import Map.WithDefault
-    import m.{defaultValue, updated}
+    import m.underlying.updated
 
     @inline
     def updatedWith3[V1 >: V](k: K, rf: V => V1): WithDefault[K, V1] =
-      new WithDefault(updated(k, rf(m(k))), defaultValue)
+      new WithDefault(updated(k, rf(m(k))), m.defaultValue)
 
     def updatedWith4[V1 >: V](k: K, rf: V => Option[V1])(implicit d: DummyImplicit): WithDefault[K, V1] =
       new WithDefault(rf(m(k)) match {
         case None => m removed k
         case Some(v) => updated(k, v)
-      }, defaultValue)
+      }, m.defaultValue)
   }
 
   implicit class RichMMap[K, V](m: collection.mutable.Map[K, V]) {
@@ -88,8 +87,12 @@ trait Library {
       })
     }
 
-    def freq_map: Map.WithDefault[T, Int] = s.iterator.foldLeft( Map[T, Int]().toDefaultMap(0) ){
-      (m, t) => m.updatedWith3(t, _ + 1)
+    def freq_map: Map.WithDefault[T, Int] = {
+      val map = collection.mutable.Map.empty[T, Int].toDefaultMap(0)
+      s.iterator foreach { i =>
+        map.updateWith3(i, _ + 1)
+      }
+      Map.from(map.underlying).toDefaultMap(0)
     }
 
     def cycle: Iterator[T] = Iterator.continually(s).flatten
@@ -156,7 +159,7 @@ abstract class Base extends AnyRef with Library {
 
   private val inp = Source.fromFile(input_file)
 
-  /** Returns all of the lines of input from a file named `input.txt`, as an iterator. <br>
+  /** Returns all of the lines of input from a file named `input2.txt`, as an iterator. <br>
     * Automatically closes the input file once the iterator is empty. <br>
     * Can only be called once.
     * @see [[scala.io.Source#getLines()]]
