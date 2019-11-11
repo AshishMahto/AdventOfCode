@@ -97,6 +97,55 @@ trait Library {
 
     def cycle: Iterator[T] = Iterator.continually(s).flatten
 
+    /**
+      * Returns a 2D sequence where each inner sequence starts with an element that satisfies the predicate,
+      * or is the first element in `s`.
+      */
+    def explode(startSegment: T => Boolean): Iterator[List[T]] = new Iterator[List[T]] {
+      private val it = s.iterator
+
+      private val head = mutable.MOption(it.nextOption())
+      private val segment = List.newBuilder[T]
+
+      private def set_init(): Unit = {
+        segment.clear()
+
+        while (it.hasNext && { head set it.next() ; !startSegment(head.get) })
+          segment += head.get
+
+        if (it.isEmpty) head.clear
+      }
+
+      override def hasNext: Boolean = head.isDefined
+
+      override def next(): List[T] = head.map { h =>
+        set_init()
+        h :: segment.result()
+      }.get
+    }
+
+    /** Returns a 2D sequence where each inner sequence ends with an element that satisfies the predicate,
+      * or is the last element in `s`. */
+    def explode_withEnd(endSegment: T => Boolean): Iterator[List[T]] = new Iterator[List[T]] {
+      private val it = s.iterator
+      private val segment = List.newBuilder[T]
+
+      override def hasNext: Boolean = it.hasNext
+
+      override def next(): List[T] = {
+        segment.clear()
+
+        var break = false
+        while (it.hasNext && !break) it.next() thenDo { next =>
+          segment += next
+          if (endSegment(next)) break = true
+        }
+
+        segment.result()
+      }
+    }
+
+
   }
 
   object mutable {
@@ -105,6 +154,8 @@ trait Library {
       def set(t: Option[T]): Unit = inner = t
 
       def set(t: T): Unit = set(Some(t))
+
+      def toOption: Option[T] = inner
 
       def clear: Unit = set(None)
 
@@ -115,10 +166,11 @@ trait Library {
       def transform(f: Option[T] => T)(implicit d: DummyImplicit): Unit = set(f(inner))
 
       def orElseUpdate(that: => Option[T]): Unit = if (inner.isEmpty) set(that)
-      def getOrElseUpdate(that: => T): T = inner getOrElse { that thenDo set _ }
+      def getOrElseUpdate(that: => T): T = inner getOrElse { that thenDo set }
     }
 
     object MOption {
+      implicit def fromOption[T](m: Option[T]): MOption[T] = MOption(m)
       implicit def toOption[T](m: MOption[T]): Option[T] = m.inner
 
       def apply[T](inner: Option[T]): MOption[T] = new MOption(inner) {}
