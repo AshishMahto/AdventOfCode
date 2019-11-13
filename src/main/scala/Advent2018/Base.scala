@@ -2,6 +2,7 @@ package Advent2018
 
 import java.io.{File, FileNotFoundException}
 
+import scala.collection.Factory
 import scala.collection.immutable.Map
 import scala.io.Source
 import scala.language.implicitConversions
@@ -18,22 +19,41 @@ trait Library {
     }
   }
 
+
   implicit class RichAny[T](x: T) {
     @inline def thenDo(f: T => Unit): T = { f(x) ; x }
-
-    // def thenDo[Unit](f: PartialFunction[T, Unit]): T = try x finally if (f isDefinedAt x) f(x)
 
     def print(prefix: String = ""): Unit = println(prefix + x.toString)
     def print_part1(): Unit = print("Part 1 Answer: ")
     def print_part2(): Unit = print("Part 2 Answer: ")
+
+    def eqv[U >: T](that: U): Boolean = x == that
   }
 
 
   implicit class RichMap[K, V](m: Map[K, V]) {
+    def toDefaultMapf[V1 >: V](f: K => V1): Map.WithDefault[K, V1] = new Map.WithDefault[K, V1](m, f)
     def toDefaultMap[V1 >: V](d: V1): Map.WithDefault[K, V1] = new Map.WithDefault[K, V1](m, _ => d)
 
     @inline
     def updatedWith2[V1 >: V](k: K, rf: Option[V] => V1): Map[K, V1] = m + (k -> rf(m get k))
+
+    def inverted[CC](f: Factory[K, CC]): Map[V, CC] = {
+      import collection.mutable
+      import collection.mutable.Builder
+
+      val acc = mutable.Map.empty[V, Builder[K, CC]]
+      for ((value, key) <- m)
+        acc.getOrElseUpdate(key, f.newBuilder) += value
+
+      var result = Map.empty[V, CC]
+      for ((k, v) <- acc)
+        result = result + (k -> v.result())
+
+      result
+    }
+
+    def inverted: Map[V, List[K]] = inverted(List)
   }
 
   implicit class RichDefaultMap[K, V](m: Map.WithDefault[K, V]) {
@@ -53,6 +73,7 @@ trait Library {
 
   implicit class RichMMap[K, V](m: collection.mutable.Map[K, V]) {
     import collection.mutable.Map
+    def toDefaultMapf(f: K => V): Map.WithDefault[K, V] = new Map.WithDefault(m, f)
     def toDefaultMap(d: V): Map.WithDefault[K, V] = new Map.WithDefault(m, _ => d)
 
     // The default .updateWith is very slow
@@ -79,7 +100,7 @@ trait Library {
       val so_far = collection.mutable.Map.empty[T, Int]
       val it = s.iterator.zipWithIndex
 
-      mutable.MOption[((Int, Int), T)] thenDo(dupe => while (dupe.isEmpty && it.hasNext) it.next() thenDo{ case (v, j) =>
+      Mutable.MOption[((Int, Int), T)] thenDo(dupe => while (dupe.isEmpty && it.hasNext) it.next() thenDo{ case (v, j) =>
         so_far get v match {
           case None => so_far += v -> j
           case Some(i) => dupe.set(i -> j -> v)
@@ -104,7 +125,7 @@ trait Library {
     def explode(startSegment: T => Boolean): Iterator[List[T]] = new Iterator[List[T]] {
       private val it = s.iterator
 
-      private val head = mutable.MOption(it.nextOption())
+      private val head = Mutable.MOption(it.nextOption())
       private val segment = List.newBuilder[T]
 
       private def set_init(): Unit = {
@@ -145,10 +166,53 @@ trait Library {
       }
     }
 
+    def maxByAll[B](f: T => B)(implicit cmp: Ordering[B]): List[T] = {
+      var maxF: B = null.asInstanceOf[B]
+      val maxElems = List.newBuilder[T]
+      var first = true
 
+      for (elem <- s) {
+        val fx = f(elem)
+        if (first || cmp.gt(fx, maxF)) {
+          maxElems.clear()
+          maxElems += elem
+          maxF = fx
+          first = false
+        } else if (cmp.equiv(fx, maxF)) {
+          maxElems += elem
+        }
+      }
+
+      maxElems.result()
+    }
+
+    def minByAll[B](f: T => B)(implicit cmp: Ordering[B]): List[T] = {
+      var minF: B = null.asInstanceOf[B]
+      val minElems = List.newBuilder[T]
+      var first = true
+
+      for (elem <- s) {
+        val fx = f(elem)
+        if (first || cmp.lt(fx, minF)) {
+          minElems.clear()
+          minElems += elem
+          minF = fx
+          first = false
+        } else if (cmp.equiv(fx, minF)) {
+          minElems += elem
+        }
+      }
+
+      minElems.result()
+    }
+
+    @inline
+    def maxAll[B >: T](implicit cmp: Ordering[B]): List[T] = maxByAll($conforms[B])(cmp)
+    @inline
+    def minAll[B >: T](implicit cmp: Ordering[B]): List[T] = minByAll($conforms[B])(cmp)
   }
 
-  object mutable {
+  object Mutable {
     //noinspection UnitMethodIsParameterless
     abstract class MOption[T](var inner: Option[T]) {
       def set(t: Option[T]): Unit = inner = t
