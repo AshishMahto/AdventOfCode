@@ -89,6 +89,14 @@ trait Library {
   implicit class RichMMap[K, V](m: collection.mutable.Map[K, V]) {
     import collection.mutable.Map
     def toDefaultMapf(f: K => V): Map.WithDefault[K, V] = new Map.WithDefault(m, f)
+    def toMemoize(f: K => V): Map.WithDefault[K, V] = new mutable.Map.WithDefault(m, f) {
+      override def get(k: K): Some[V] = Some(m.get(k) match {
+        case None    => f(k) thenDo { m.update(k, _) }
+        case Some(v) => v
+      })
+
+      override def apply(key: K): V = this.get(key).get
+    }
     def toDefaultMap(d: V): Map.WithDefault[K, V] = new Map.WithDefault(m, _ => d)
 
     // The default .updateWith is very slow
