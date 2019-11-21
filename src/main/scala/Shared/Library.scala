@@ -273,6 +273,14 @@ trait Library {
     def maxAll[B >: T](implicit cmp: Ordering[B]): List[T] = maxByAll($conforms[B])(cmp)
     @inline
     def minAll[B >: T](implicit cmp: Ordering[B]): List[T] = minByAll($conforms[B])(cmp)
+
+    def bothMinMax[B >: T](implicit cmp: Ordering[B]): (T, T) = {
+      val it = s.iterator
+      if (it.isEmpty)
+        throw new UnsupportedOperationException("empty.min")
+      val init = it.next()
+      it.foldLeft(init -> init){ case ((min, max), next) => cmp.min(min, next) -> cmp.max(max, next) }
+    }
   }
 
   object Mutable {
