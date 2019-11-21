@@ -2,13 +2,14 @@ package Shared
 
 import scala.collection.immutable.{List, Map}
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.{Factory, IterableOnce, StrictOptimizedSeqFactory, mutable}
+import scala.collection.{Factory, IterableOnce, IterableOps, StrictOptimizedSeqFactory, mutable}
 import scala.language.implicitConversions
 import scala.util.Try
 
 trait Library {
+  var debug_print = false
 
-  def printLines[T](lns: T*): Unit = lns foreach println
+  def printLines[T](lns: T*): Unit = if (debug_print) lns foreach println
 
   def time[R](block: => R): R = {
     val t0 = System.nanoTime()
@@ -22,11 +23,17 @@ trait Library {
   implicit class RichAny[T](x: T) {
     @inline def thenDo(f: T => Unit): T = { f(x) ; x }
 
-    def print(prefix: String = ""): Unit = println(prefix + x.toString)
-    def print_part1(): Unit = print("Part 1 Answer: ")
-    def print_part2(): Unit = print("Part 2 Answer: ")
+    @inline
+    private final def p(pfx: String): Unit = println(pfx + x.toString)
+    def print(prefix: String = ""): Unit = if (debug_print) p(prefix)
+    def print_part1(): Unit = p("Part 1 Answer: ")
+    def print_part2(): Unit = p("Part 2 Answer: ")
 
     def eqv[U >: T](that: U): Boolean = x == that
+  }
+
+  implicit class RichTuple2[A, B](p: (A, B)) {
+    @inline def combine[T](f: (A, B) => T): T = f(p._1, p._2)
   }
 
   implicit class RichInt(i: Int) {
@@ -39,7 +46,7 @@ trait Library {
 
   implicit class RichMap[K, V](m: Map[K, V]) {
     def toDefaultMapf[V1 >: V](f: K => V1): Map.WithDefault[K, V1] = new Map.WithDefault[K, V1](m, f)
-    def toDefaultMap[V1 >: V](d: V1): Map.WithDefault[K, V1] = new Map.WithDefault[K, V1](m, _ => d)
+    def toDefaultMap(d: V): Map.WithDefault[K, V] = new Map.WithDefault[K, V](m, _ => d)
 
     @inline
     def updatedWith2[V1 >: V](k: K, rf: Option[V] => V1): Map[K, V1] = m + (k -> rf(m get k))
@@ -63,19 +70,20 @@ trait Library {
   }
 
   implicit class RichDefaultMap[K, V](m: Map.WithDefault[K, V]) {
-    import m.underlying.updated
+    import m.defaultValue
+    import m.underlying.{removed, updated}
 
     import Map.WithDefault
 
     @inline
-    def updatedWith3[V1 >: V](k: K, rf: V => V1): WithDefault[K, V1] =
-      new WithDefault(updated(k, rf(m(k))), m.defaultValue)
+    final def updatedWith3[V1 >: V](k: K, rf: V => V1): WithDefault[K, V1] =
+      new WithDefault(updated(k, rf(m(k))), defaultValue)
 
-    def updatedWith4[V1 >: V](k: K, rf: V => Option[V1])(implicit d: DummyImplicit): WithDefault[K, V1] =
+    def updatedWith3[V1 >: V](k: K, rf: V => Option[V1])(implicit d: DummyImplicit): WithDefault[K, V1] =
       new WithDefault(rf(m(k)) match {
-        case None => m removed k
+        case None => removed(k)
         case Some(v) => updated(k, v)
-      }, m.defaultValue)
+      }, defaultValue)
   }
 
   implicit class RichMMap[K, V](m: collection.mutable.Map[K, V]) {
@@ -100,9 +108,19 @@ trait Library {
       }
   }
 
+  implicit class RichIterableOps[A, CC[_], C](s: IterableOps[A, CC, C]) {
+    def groupByf[K, V](implicit toKeyVal: A => (K, V)) = {
+      var cached: (K, V) = null
+      def cached_toKeyVal(a: A): (K, V) = {
+        cached = toKeyVal(a)
+        cached
+      }
 
-  implicit class RichSeq[T](s: IterableOnce[T]) {
+      s.groupMap(a => cached_toKeyVal(a)._1)(_ => cached._2)
+    }
+  }
 
+  implicit class RichIterableOnce[T](s: IterableOnce[T]) {
     def find_duplicates: Option[((Int, Int), T)] = {
       val so_far = collection.mutable.Map.empty[T, Int]
       val it = s.iterator.zipWithIndex

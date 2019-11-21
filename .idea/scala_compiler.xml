@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ScalaCompilerConfiguration">
     <option name="implicitConversions" value="true" />
-    <profile name="sbt 1" modules="AdventOfCode,adventofcode" />
+    <profile name="sbt 1" modules="AdventOfCode,adventofcode">
+      <option name="higherKinds" value="true" />
+    </profile>
   </component>
 </project>
