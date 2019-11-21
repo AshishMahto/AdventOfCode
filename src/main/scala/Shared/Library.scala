@@ -2,12 +2,12 @@ package Shared
 
 import scala.collection.immutable.{List, Map}
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.{Factory, IterableOnce, IterableOps, StrictOptimizedSeqFactory, mutable}
+import scala.collection.{AbstractView, Factory, IterableOnce, IterableOps, Iterator, StrictOptimizedSeqFactory, mutable}
 import scala.language.implicitConversions
 import scala.util.Try
 
 trait Library {
-  var debug_print = false
+  var debug_print = true
 
   def printLines[T](lns: T*): Unit = if (debug_print) lns foreach println
 
@@ -109,7 +109,7 @@ trait Library {
   }
 
   implicit class RichIterableOps[A, CC[_], C](s: IterableOps[A, CC, C]) {
-    def groupByf[K, V](implicit toKeyVal: A => (K, V)) = {
+    def groupByf[K, V](implicit toKeyVal: A => (K, V)): Map[K, CC[V]] = {
       var cached: (K, V) = null
       def cached_toKeyVal(a: A): (K, V) = {
         cached = toKeyVal(a)
@@ -117,6 +117,44 @@ trait Library {
       }
 
       s.groupMap(a => cached_toKeyVal(a)._1)(_ => cached._2)
+    }
+  }
+
+  class UnfoldState[A, S](init: S, f: S => Option[(A, S)]) extends AbstractView[A] {
+    var state: S = init
+    override def iterator: Iterator[A] = new Iterator[A] {
+      //noinspection ConvertNullInitializerToUnderscore
+      private[this] var nextResult: Option[(A, S)] = null
+
+      override def hasNext: Boolean = {
+        if (nextResult eq null) nextResult = {
+          f(state) thenDo (res => if (res eq null) throw new NullPointerException("null during unfold"))
+        }
+        nextResult.isDefined
+      }
+
+      override def next(): A = {
+        if (hasNext) {
+          val (value, newState) = nextResult.get
+          state = newState
+          nextResult = null
+          value
+        } else Iterator.empty.next()
+      }
+    }
+  }
+
+  implicit class RichListObject(l: List.type) {
+    def unfoldState[A, S](init: S)(f: S => Option[(A, S)]): (List[A], S) = {
+      val us = new UnfoldState(init, f)
+      List.from(us) -> us.state
+    }
+  }
+
+  implicit class RichVectorObject(l: Vector.type) {
+    def unfoldState[A, S](init: S)(f: S => Option[(A, S)]): (Vector[A], S) = {
+      val us = new UnfoldState(init, f)
+      Vector.from(us) -> us.state
     }
   }
 
