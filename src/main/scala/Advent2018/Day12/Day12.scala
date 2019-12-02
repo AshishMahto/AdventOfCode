@@ -1,6 +1,6 @@
 package Advent2018.Day12
 
-import Advent2018.Base
+import Shared.Base
 
 import scala.collection.mutable
 

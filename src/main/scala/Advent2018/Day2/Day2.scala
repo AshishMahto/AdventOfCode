@@ -1,9 +1,10 @@
 package Advent2018.Day2
 
-import Advent2018.Base
+import Shared.Base
 
 object Day2 extends Base with App {
 
+  @scala.annotation.tailrec
   def duplicate_counts[T](ls: List[T], s: Set[Int] = Set.empty): Set[Int] = ls match {
     case Nil => s
     case h :: t =>

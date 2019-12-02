@@ -1,8 +1,6 @@
-package Advent2018
+package Shared
 
 import java.io.{File, FileNotFoundException}
-
-import Shared.Library
 
 import scala.io.Source
 import scala.language.implicitConversions
@@ -12,21 +10,21 @@ abstract class Base extends AnyRef with Library {
 
   val debug_path = false
 
-  private val path_to_days = List("src", "main", "scala", "Advent2018").mkString(File.separator)
+  private val path_to_days = List("src", "main", "scala").mkString(File.separator)
 
   val dir = new File(path_to_days)
 
   if (debug_path) {
     println(
       s"""Your current directory is: '${dir.getCanonicalPath}'
-         |If the above directory is not the folder immediately upwards from the DayX folders,
-         |Please edit the `Advent2018.Base.path_to_days` to make this the case. Use ".." to move up a folder if needed.
+         |If the above directory is not the folder immediately upwards from the Advent20XX folders,
+         |Please edit the `Shared.Base.path_to_days` to make this the case. Use ".." to move up a folder if needed.
          |""".stripMargin)
   }
 
   assert(dir.isDirectory)
 
-  private val concrete_class_name = getClass.getSimpleName.init
+  private val concrete_class_name = getClass.getCanonicalName.split('.').init.mkString(File.separator)
   private val path_to_input = List(path_to_days, concrete_class_name, "input.txt").mkString(File.separator)
 
   val input_file = new File(path_to_input)
@@ -49,4 +47,6 @@ abstract class Base extends AnyRef with Library {
 
     override def next(): String = inner.next()
   }
+
+  lazy val firstLine: String = getLines.next() thenDo { _ => inp.close() }
 }

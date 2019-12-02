@@ -1,6 +1,6 @@
 package Advent2018.Day1
 
-import Advent2018.Base
+import Shared.Base
 
 object Day1 extends Base with App {
   val num_list = getLines.map(_.toInt).toList

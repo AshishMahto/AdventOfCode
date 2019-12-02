@@ -1,6 +1,6 @@
 package Advent2018.Day13
 
-import Advent2018.Base
+import Shared.Base
 
 object Day13 extends Base with App {
 

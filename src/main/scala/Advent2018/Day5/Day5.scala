@@ -1,6 +1,6 @@
 package Advent2018.Day5
 
-import Advent2018.Base
+import Shared.Base
 
 import scala.annotation.tailrec
 

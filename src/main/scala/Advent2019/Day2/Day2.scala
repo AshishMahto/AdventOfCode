@@ -1,15 +1,14 @@
 package Advent2019.Day2
 
-import Advent2019.Base
+import Shared.Base
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Try
 
 object Day2 extends Base with App {
-  val init_inp = getLines.toList.head.split(",")
+  val init_inp = firstLine.split(',')
 
-  def mk_inp: ArrayBuffer[Int] = init_inp.to(mutable.ArrayBuffer).map(_.toInt)
+  def mk_inp: ArrayBuffer[Int] = init_inp.to(ArrayBuffer).map(_.toInt)
 
   @scala.annotation.tailrec
   def eval(idx: Int = 0)(implicit inp: ArrayBuffer[Int]): Boolean = {

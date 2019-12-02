@@ -1,6 +1,6 @@
 package Advent2018.Day7
 
-import Advent2018.Base
+import Shared.Base
 
 import scala.collection.immutable.SortedSet
 import scala.collection.{View, mutable}

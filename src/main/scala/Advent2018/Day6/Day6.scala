@@ -1,6 +1,6 @@
 package Advent2018.Day6
 
-import Advent2018.Base
+import Shared.Base
 import fansi.{Attr, Color}
 
 import scala.collection.mutable

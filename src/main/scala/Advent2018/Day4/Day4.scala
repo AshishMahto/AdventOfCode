@@ -3,7 +3,7 @@ package Advent2018.Day4
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import Advent2018.Base
+import Shared.Base
 
 object Day4 extends Base with App {
 
