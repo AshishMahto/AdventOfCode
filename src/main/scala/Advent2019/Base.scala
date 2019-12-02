@@ -1,4 +1,4 @@
-package Advent2018
+package Advent2019
 
 import java.io.{File, FileNotFoundException}
 
@@ -12,7 +12,7 @@ abstract class Base extends AnyRef with Library {
 
   val debug_path = false
 
-  private val path_to_days = List("src", "main", "scala", "Advent2018").mkString(File.separator)
+  private val path_to_days = List("src", "main", "scala", "Advent2019").mkString(File.separator)
 
   val dir = new File(path_to_days)
 
@@ -20,7 +20,7 @@ abstract class Base extends AnyRef with Library {
     println(
       s"""Your current directory is: '${dir.getCanonicalPath}'
          |If the above directory is not the folder immediately upwards from the DayX folders,
-         |Please edit the `Advent2018.Base.path_to_days` to make this the case. Use ".." to move up a folder if needed.
+         |Please edit the `Advent2019.Base.path_to_days` to make this the case. Use ".." to move up a folder if needed.
          |""".stripMargin)
   }
 
