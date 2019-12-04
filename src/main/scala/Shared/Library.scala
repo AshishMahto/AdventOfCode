@@ -42,6 +42,16 @@ trait Library {
       val ret = i % m
       if (ret >= 0) ret else ret + m
     }
+
+    def digits(base: Int = 10): List[Int] = {
+      var b = List[Int]()
+      var m = i
+      while (m != 0) {
+        b ::= (m % base)
+        m /= base
+      }
+      b
+    }
   }
 
   implicit class RichMap[K, V](m: Map[K, V]) {
