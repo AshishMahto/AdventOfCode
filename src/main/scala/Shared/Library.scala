@@ -136,6 +136,10 @@ trait Library {
 
       s.groupMap(a => cached_toKeyVal(a)._1)(_ => cached._2)
     }
+
+    def implicitMap[B](implicit f: A => B): collection.View[B] = {
+      s.view map implicitly
+    }
   }
 
   class UnfoldState[A, S](init: S, f: S => Option[(A, S)]) extends AbstractView[A] {

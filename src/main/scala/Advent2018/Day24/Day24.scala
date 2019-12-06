@@ -90,5 +90,4 @@ object Day24 extends Base with App {
 
 
 
-
 }

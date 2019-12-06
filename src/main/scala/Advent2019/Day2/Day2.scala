@@ -10,17 +10,22 @@ object Day2 extends Base with App {
 
   def mk_inp: ArrayBuffer[Int] = init_inp.to(ArrayBuffer).map(_.toInt)
 
-  @scala.annotation.tailrec
-  def eval(idx: Int = 0)(implicit inp: ArrayBuffer[Int]): Boolean = {
+  def eval1(idx: Int = 0)(implicit inp: ArrayBuffer[Int]): Option[Int] = {
     inp.apply(idx) match {
       case 1 =>
         inp.update(inp(idx + 3), inp(inp(idx + 1)) + inp(inp(idx + 2)))
-        eval(idx + 4)
+        Some(idx + 4)
       case 2 =>
         inp.update(inp(idx + 3), inp(inp(idx + 1)) * inp(inp(idx + 2)))
-        eval(idx + 4)
-      case 99 => true
+        Some(idx + 4)
+      case 99 => None
     }
+  }
+
+  @scala.annotation.tailrec
+  def eval(idx: Int = 0)(implicit inp: ArrayBuffer[Int]): Unit = eval1(idx) match {
+    case None => ()
+    case Some(i) => eval(i)
   }
 
   def go(noun: Int = 12, verb: Int = 2) = {

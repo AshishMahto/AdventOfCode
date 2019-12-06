@@ -29,7 +29,7 @@ object Day4 extends Base with App {
       if (consec_pos == 0) return digits(1) != digits(2)
 
       val close = digits drop consec_pos - 1
-      close(0) != close(1) && close(2) != close.applyOrElse(3, _ => -1)
+      close(0) != close(1) && close(2) != close.applyOrElse[Int, Int](3, _ => -1)
     }
 
     consec_posns.exists(h)
