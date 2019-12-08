@@ -2,25 +2,9 @@ package Advent2019.Day6
 
 import Shared.Base
 
-import scala.collection.View
 
 object Day6 extends Base with App {
-  val lns = List(
-    getLines.toList,
-    """COM)B
-      |B)C
-      |C)D
-      |D)E
-      |E)F
-      |B)G
-      |G)H
-      |D)I
-      |E)J
-      |J)K
-      |K)L
-      |K)YOU
-      |I)SAN""".stripMargin.linesIterator.toList
-  )(0)
+  val lns = getLines.toList
 
   val reader = """(\w+)\)(\w+)""".r
 
