@@ -36,6 +36,25 @@ trait Library {
     @inline def combine[T](f: (A, B) => T): T = f(p._1, p._2)
   }
 
+  implicit class RichLong(i: Long) {
+    def tryInt: Int = {
+      if (Int.MinValue.toLong <= i && i <= Int.MaxValue.toLong)
+        i.toInt
+      else
+        throw new IllegalArgumentException(s"Long $i is too large for int.")
+    }
+
+    def digits(base: Int = 10): List[Int] = {
+      var b = List[Int]()
+      var m = i
+      while (m != 0) {
+        b ::= (m % base).tryInt
+        m /= base
+      }
+      b
+    }
+  }
+
   implicit class RichInt(i: Int) {
     def ifNat[U](f: Int => U): Option[U] = Option.when(i >= 0)(f(i))
     def %%(m: Int): Int = {
