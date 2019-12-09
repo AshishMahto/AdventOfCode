@@ -355,10 +355,12 @@ trait Library {
                           ) extends mutable.AbstractBuffer[A] {
 
       def this(from: IterableOnce[A]) = {
-        this(from match {
-          case a: ArrayBuffer[A] => a
-          case _ => ArrayBuffer from from
-        }, new ArrayBuffer[A]())
+        this(
+          new ArrayBuffer[A](),
+          from match {
+            case a: ArrayBuffer[A] => a
+            case x => ArrayBuffer from x
+          })
       }
 
       def this() = {
