@@ -74,7 +74,7 @@ trait Library {
     }
 
     @tailrec
-    final def gcd(j: Int): Int = if (j == 0) i else j.gcd(i % j)
+    final def gcd(j: Int): Int = if (j == 0) math.abs(i) else math.abs(j).gcd(i % math.abs(j))
   }
 
   implicit class RichMap[K, V](m: Map[K, V]) {
