@@ -18,16 +18,22 @@ object Day9 extends Base with App {
     import Advent2019.Day9.Day9.Mutable.MOption
 
     object arr {
-      def apply(idx: Long): Long = if (idx < arr0.size) arr0.apply(idx.tryInt) else 0
+      def debugInfo: Unit =
+        println("mem values = " + extra_mem.size +
+          ", arr size = " + arr0.length +
+          ", mem largest = " + extra_mem.keys.max)
+
+
+      import scala.collection.mutable.Map
+      val extra_mem: Map.WithDefault[Long, Long] = new Map.WithDefault[Long, Long](Map(), _ => 0L)
+
+      def apply(idx: Long): Long = if (idx < arr0.size) arr0.apply(idx.tryInt) else extra_mem(idx)
 
       def update(idx: Long, v: Long): Unit = {
-        val i = idx.tryInt
         if (idx < arr0.size)
-          arr0.update(i, v)
+          arr0.update(idx.tryInt, v)
         else {
-          arr0.sizeHint(i)
-          arr0.addAll(ArrayBuffer.fill(i - arr0.size + 1)(0L))
-          arr0.update(i, v)
+          extra_mem.update(idx, v)
         }
       }
     }
@@ -156,6 +162,10 @@ object Day9 extends Base with App {
 
   new IntComp(ArrayBuffer from lns).addInput(1).eval().reverse mkString ", " print_part1
 
-  new IntComp(ArrayBuffer from lns).addInput(2).eval().reverse mkString ", " print_part2
+  val c2 = new IntComp(ArrayBuffer from lns).addInput(2)
+
+  c2.eval().reverse mkString ", " print_part2
+
+  c2.arr.debugInfo
 
 }
