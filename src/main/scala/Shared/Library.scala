@@ -1,5 +1,6 @@
 package Shared
 
+import scala.annotation.tailrec
 import scala.collection.immutable.{List, Map}
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.{AbstractView, Factory, IterableOnce, IterableOps, Iterator, StrictOptimizedSeqFactory, mutable}
@@ -71,6 +72,9 @@ trait Library {
       }
       b
     }
+
+    @tailrec
+    final def gcd(j: Int): Int = if (j == 0) i else j.gcd(i % j)
   }
 
   implicit class RichMap[K, V](m: Map[K, V]) {
