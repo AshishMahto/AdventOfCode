@@ -11,7 +11,6 @@ def toInt(s, x):
     except: return x
   return s, helper()
 
-
 f = [
   dict(sorted(map(lambda s: toInt(*s.split(':')), s.split())))
   for s in open("input.txt").read().strip().split('\n\n')
@@ -21,7 +20,7 @@ reqs = set("byr,iyr,eyr,hgt,hcl,ecl,pid".split(','))
 print(sum(set(ln.keys()) >= reqs for ln in f))
 
 hcl = re.compile(r"#[0-9a-f]{6}")
-ecl = re.compile("amb blu brn gry grn hzl oth".replace(' ', '|'))
+ecl = re.compile(r"amb|blu|brn|gry|grn|hzl|oth")
 pid = re.compile(r"[0-9]{9}")
 
 def validate(d):
@@ -36,12 +35,7 @@ def validate(d):
     assert ecl.fullmatch(d["ecl"])
     assert pid.fullmatch(d["pid"])
     return 1
-  except : return 0
+  except:
+    return 0
 
 print(sum(map(validate, f)))
-
-for ln in f:
-  val = validate(ln)
-  if 'cid' in ln: del ln['cid']
-  if val: print(str(ln) + ": ", val)
-
