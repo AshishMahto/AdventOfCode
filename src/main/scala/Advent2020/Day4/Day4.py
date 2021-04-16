@@ -21,20 +21,20 @@ reqs = set("byr,iyr,eyr,hgt,hcl,ecl,pid".split(','))
 print(sum(set(ln.keys()) >= reqs for ln in f))
 
 hcl = re.compile(r"#[0-9a-f]{6}")
-ecl = set("amb blu brn gry grn hzl oth".split())
+ecl = re.compile("amb blu brn gry grn hzl oth".replace(' ', '|'))
 pid = re.compile(r"[0-9]{9}")
 
-def validate(ln):
+def validate(d):
   try:
-    assert 1920 <= ln["byr"] <= 2002
-    assert 2010 <= ln["iyr"] <= 2020
-    assert 2020 <= ln["eyr"] <= 2030
-    ht, unit = ln["hgt"]
+    assert 1920 <= d["byr"] <= 2002
+    assert 2010 <= d["iyr"] <= 2020
+    assert 2020 <= d["eyr"] <= 2030
+    ht, unit = d["hgt"]
     if unit == 'cm': assert 150 <= ht <= 193
     if unit == 'in': assert 59 <= ht <= 76
-    assert hcl.match(ln["hcl"])
-    assert ln["ecl"] in ecl
-    assert pid.match(ln["pid"])
+    assert hcl.fullmatch(d["hcl"])
+    assert ecl.fullmatch(d["ecl"])
+    assert pid.fullmatch(d["pid"])
     return 1
   except : return 0
 
@@ -42,5 +42,6 @@ print(sum(map(validate, f)))
 
 for ln in f:
   val = validate(ln)
+  if 'cid' in ln: del ln['cid']
   if val: print(str(ln) + ": ", val)
 
