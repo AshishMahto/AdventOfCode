@@ -6,9 +6,6 @@
       <option name="implicitConversions" value="true" />
       <option name="higherKinds" value="true" />
     </profile>
-    <profile name="sbt 2" modules="AdventOfCode">
-      <option name="implicitConversions" value="true" />
-      <option name="higherKinds" value="true" />
-    </profile>
+    <profile name="sbt 2" modules="AdventOfCode" />
   </component>
 </project>
