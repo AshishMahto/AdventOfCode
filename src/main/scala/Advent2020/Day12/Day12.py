@@ -15,7 +15,7 @@ def parse(s):
   dir, *num = s
   return dir, int(''.join(num))
 
-inp = map(parse, open("input.txt").read().strip().split())
+inp = list(map(parse, open("input.txt").read().strip().split()))
 
 def go():
   cur = 0
@@ -38,20 +38,18 @@ print(f"{part1}: {sum(map(abs, part1))}")
 import numpy as np
 
 def part2():
-  def vec(*tpl): return np.array([[_] for _ in tpl])
-  mv = { k: vec(*v) for k, v in vel.items() }
-  pos = vec(0, 0)
-  wp = vec(0, 0)
+  pos = (0, 0)
+  wp = (1, 10)
   for d, i in inp:
-    if d in mv:
-      wp += i * mv[d]
+    if d in vel:
+      wp = add(wp, scale(i, vel[d]))
     elif d == 'F':
-      pos += i * np.linalg.norm(wp)
+      pos = add(pos, scale(i, wp))
     else:
       i //= 90
-      if d == 'L':
-        i = 4 - i
-      cur = (cur + i) % 4
+      if d == 'L': i = 4 - i
+      for _ in range(i): wp = (-wp[1], wp[0])
   return pos
 
-  pass
+ret = part2()
+print(f"{ret}: {sum(map(abs, ret))}")
