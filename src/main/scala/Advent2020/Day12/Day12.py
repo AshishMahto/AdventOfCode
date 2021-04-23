@@ -12,8 +12,8 @@ def add(p, q): return tuple(i + j for i,j in zip(p, q))
 def scale(k, p): return tuple(k * i for i in p)
 
 def parse(s):
-  dir, *num = s
-  return dir, int(''.join(num))
+  _dir, *num = s
+  return _dir, int(''.join(num))
 
 inp = list(map(parse, open("input.txt").read().strip().split()))
 
@@ -34,8 +34,6 @@ def go():
 
 part1 = go()
 print(f"{part1}: {sum(map(abs, part1))}")
-
-import numpy as np
 
 def part2():
   pos = (0, 0)
