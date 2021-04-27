@@ -6,6 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.{AbstractView, Factory, IterableOnce, IterableOps, Iterator, StrictOptimizedSeqFactory, mutable}
 import scala.language.implicitConversions
 import scala.util.Try
+import java.lang.System.nanoTime
 
 trait Library {
   var debug_print = true
@@ -13,11 +14,8 @@ trait Library {
   def printLines[T](lns: T*): Unit = if (debug_print) lns foreach println
 
   def time[R](block: => R): R = {
-    val t0 = System.nanoTime()
-    try block finally {
-      val t1 = System.nanoTime()
-      (t1 - t0).print("Time: ")
-    }
+    val t0 = nanoTime()
+    try block finally ((nanoTime() - t0) / 1e9).print("Time: ")
   }
 
 

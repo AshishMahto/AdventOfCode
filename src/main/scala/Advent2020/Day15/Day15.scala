@@ -17,16 +17,12 @@ object Day15 extends Base with App {
     s.length until end - 1 foreach { i =>
       y = ages(x)
       ages(x) = i
-      if (y >= 0) i - y else 0
+      x = if (y >= 0) i - y else 0
     }
     x
   }
 
-  val start = System.nanoTime()
   println(gen())
-  val mid = System.nanoTime()
-  println(s"Took ${(mid - start) / 1e9} seconds")
-  println(gen(end=sz))
-  val end = System.nanoTime()
-  println(s"Took ${(end - mid) / 1e9} seconds")
+
+  println(time(gen(end=sz)))
 }
