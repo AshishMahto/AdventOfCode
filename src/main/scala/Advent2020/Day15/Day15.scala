@@ -1,7 +1,6 @@
 package Advent2020.Day15
 
 import Shared.Base
-import scala.collection.mutable.ArrayBuffer
 
 object Day15 extends Base with App {
 
@@ -10,19 +9,20 @@ object Day15 extends Base with App {
   val starting = firstLine.split(",").map(_.toInt)
 
   def gen(s: Array[Int] = starting, end: Int = 2020) = {
-    val ages = ArrayBuffer.fill(sz)(-1)
+    val ages = Array.fill(sz)(0)
     s.indices foreach { i => ages(s(i)) = i }
-    var x = 0
+    var x = s.length
+    ages(0) = x
     var y = 0
-    s.length until end - 1 foreach { i =>
+    s.length + 1 until end - 1 foreach { i =>
       y = ages(x)
       ages(x) = i
-      x = if (y >= 0) i - y else 0
+      x = if (y == 0) 0 else i - y
     }
     x
   }
 
   println(gen())
 
-  println(time(gen(end=sz)))
+  time(println(gen(end=sz)))
 }
