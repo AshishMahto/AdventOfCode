@@ -28,8 +28,7 @@ def go(dim):
     )
 
   state=init()
-  for _ in range(6):
-    state = step(state)
+  for _ in range(6): state = step(state)
   return state
 
 print(len(go(3)))
