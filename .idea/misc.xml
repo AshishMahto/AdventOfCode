@@ -3,7 +3,7 @@
   <component name="ExcludeFromValidation">
     <file url="file://$PROJECT_DIR$/src/main/scala/Advent2018/Day8/Day8.scala" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="15" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="azul-19" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -1,1 +1,3 @@
 /null
+**/target
+**/sbt.json

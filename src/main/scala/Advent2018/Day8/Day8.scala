@@ -26,19 +26,19 @@ object Day8 extends Base with App {
 
   val inp = getLines.next().split(" ").toList.map(_.toInt)
 
-  def parseTree(inp: List[Int]): (Tree, List[Int]) = inp match {
-    case num_kids :: num_meta :: rest =>
-      var i = num_kids
+  def parseTree(inp: List[Int]): (Tree, List[Int]) = {
+    val num_kids :: num_meta :: rest = inp
+    var i = num_kids
 
-      val (kids, rest2) = Vector.unfoldState(rest){ rest_local =>
-        Option.when(i > 0) {
-          i -= 1
-          parseTree(rest_local)
-        }
+    val (kids, rest2) = Vector.unfoldState(rest) { rest_local =>
+      Option.when(i > 0) {
+        i -= 1
+        parseTree(rest_local)
       }
+    }
 
-      val (meta, rest3) = rest2.splitAt(num_meta)
-      Tree(num_kids, num_meta, kids, meta) -> rest3
+    val (meta, rest3) = rest2.splitAt(num_meta)
+    Tree(num_kids, num_meta, kids, meta) -> rest3
   }
 
   val (tree, Nil) = parseTree(inp)

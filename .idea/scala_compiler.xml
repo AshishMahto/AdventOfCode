@@ -6,6 +6,6 @@
       <option name="implicitConversions" value="true" />
       <option name="higherKinds" value="true" />
     </profile>
-    <profile name="sbt 2" modules="AdventOfCode" />
+    <profile name="sbt 2" modules="Advent2021,Advent3,AdventOfCode,Shared3,scala.Advent2021,src3.Advent3" />
   </component>
 </project>

@@ -5,9 +5,10 @@ import Shared.Base
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, Queue}
+import scala.language.implicitConversions
 
 object Day7 extends Base with App { Day =>
-  import Day.Mutable.{Cycle, MOption}
+  import Day.Mutable.MOption
 
   class IntComp(arr: ArrayBuffer[Int]) {
     import scala.collection.View

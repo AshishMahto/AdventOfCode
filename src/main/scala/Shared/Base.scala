@@ -6,7 +6,7 @@ import scala.io.Source
 import scala.language.implicitConversions
 
 
-abstract class Base extends AnyRef with Library {
+trait Base extends Library {
 
   val debug_path = false
 

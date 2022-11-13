@@ -33,7 +33,8 @@ object Day12 extends Base with App {
     case ruleReader(k, v) => plantsToByte(k) -> plantToBit(v.head)
   }.toMap toDefaultMap 0
 
-  var state = IndexedSeq.from(initState)
+  
+  var state = initState.to(IndexedSeq)
 
   var zeroIdx = 0
 
@@ -66,7 +67,7 @@ object Day12 extends Base with App {
   dotProdIndices().print_part1()
 
   zeroIdx = 0
-  state = IndexedSeq.from(initState)
+  state = initState.to(IndexedSeq)
 
 
   val stateGenIdx = mutable.Map[IndexedSeq[Int], (Int, Long)]()

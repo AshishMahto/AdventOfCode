@@ -23,10 +23,8 @@ object Day3 extends Base with App {
 
 
   def follow(ln: Ln) = {
-    ln.foldLeft(List(List(0,0))) { case (a, (v, dir)) =>
-      (1 to v).foldLeft(a) { case (x :: xs, _) =>
-        sum(x, dir) :: x :: xs
-      }
+    ln.foldLeft(::(List(0,0), Nil)) { case (a, (v, dir)) =>
+      (1 to v).foldLeft(a) { case (x :: xs, _) => ::(sum(x, dir), x :: xs) }
     }
   }
 
@@ -36,7 +34,7 @@ object Day3 extends Base with App {
   def sum(p: List[Int], q: List[Int]) = p zip q map Function.tupled(_ + _)
   def dist(p: List[Int], q: List[Int]) = p zip q map Function.tupled(_ - _) map math.abs sum
 
-  val f0 = follow(lns(0)).init
+  val f0 = follow(lns.head).init
   val len0 = f0.length
   val f1 = follow(lns(1)).init
   val len1 = f1.length
