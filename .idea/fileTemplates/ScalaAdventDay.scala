@@ -1,7 +1,7 @@
 #if ((${PACKAGE_NAME} && ${PACKAGE_NAME} != ""))package ${PACKAGE_NAME} #end
 
-import Shared.Base
+import Shared.D
 
-object ${NAME} extends Base with App {
+object D${DAY} extends D {
   
 }

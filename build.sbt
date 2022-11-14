@@ -16,7 +16,6 @@ lazy val Advent3 = project.in(file("Advent3")).settings(
     "com.lihaoyi" %% "requests" % "0.7.1",
   ),
   scalacOptions ++= Seq(
-    "-explain"
   ),
 )
 
