@@ -2,6 +2,6 @@
 
 import Shared.D
 
-object D${DAY} extends D {
+private[this] object D${DAY} extends D {
   
 }

@@ -54,7 +54,8 @@ trait D extends Helpers:
   val input = if inFile.exists() then Files readString inFile.toPath else sesh.get(adventURL("input")).text()
 
   object Input:
-    def nums = raw"\d+".r findAllIn input map (_.toInt)
+    lazy val nums = raw"\d+".r findAllIn input map (_.toInt)
+    lazy val lines = input.linesIterator.toList
 
   private[Shared] def answer(level: Int, answer: String) = if input.count(_ == '\n') < 100 then Some(Answer.SampleInput) else
     val lookFor = "(?<=<p>)[^<]+".r
