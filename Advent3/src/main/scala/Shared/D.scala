@@ -25,7 +25,7 @@ trait Helpers { self =>
       level += 1
       println(s"Part $level Answer: " + x)
       (self, x) match
-        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response = "))
+        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response ="))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => ()
   def pLines(ls: Any*): Unit = if (debug_print) ls foreach println
@@ -57,18 +57,20 @@ trait D extends Helpers:
     lazy val nums = raw"\d+".r findAllIn input map (_.toInt)
     lazy val lines = input.linesIterator.toList
 
+  import scala.jdk.CollectionConverters._
   private[Shared] def answer(level: Int, answer: String) = if input.count(_ == '\n') < 100 then Some(Answer.SampleInput) else
     val lookFor = "(?<=<p>)[^<]+".r
     val outFile = new File(s"dir$year${\}day$day0-$level.outs.txt")
     val txt = if !outFile.exists() then
       outFile.createNewFile()
-      ""
-    else Files readString outFile.toPath
+      collection.mutable.Buffer.empty[String]
+    else Files.readAllLines(outFile.toPath).asScala
     if (txt contains answer) None else
-      Files.writeString(outFile.toPath, answer + "\n", StandardOpenOption.APPEND)
       lookFor findFirstIn
         sesh.post(adventURL("answer"), data = Map("level" -> level.toString, "answer" -> answer)).text() map
-        Answer.from
+        Answer.from thenDo { ans =>
+        Files.writeString(outFile.toPath, answer + "\n" + ans.fold("")(_.toString + "\n"), StandardOpenOption.APPEND)
+      }
 
   if !inFile.getParentFile.isDirectory then inFile.getParentFile.mkdir()
   if !inFile.exists() then Files.writeString(inFile.toPath, input, StandardOpenOption.CREATE_NEW)
@@ -88,6 +90,8 @@ object Answer {
   case class IsToo(dir: String) extends Answer
   object IsToo:
     val rgx = raw"That's not the right answer; your answer is too ([a-z]+)\.  If you're stuck, make sure you're using the full input data; there are also some general tips on the ".r
+  object SomeoneElseAnswer:
+    val rgx = raw"That's not the right answer; your answer is too ([a-z]+)\.  Curiously, it's the right answer for someone else; you might be logged in to the wrong account or just unlucky. In any case, you need to be using ".r
   object SimpleAnswer:
     val all = List[SimpleAnswer](NotRight, Correct, WrongLevel)
   case object SampleInput extends Answer
@@ -95,6 +99,7 @@ object Answer {
   def from(s: String): Answer = SimpleAnswer.all.find(s == _.text).getOrElse(s match
     case Wait.rgx(minutes, seconds) => Wait(60 * minutes.toInt + seconds.toInt)
     case IsToo.rgx(dir) => IsToo(dir)
+    case SomeoneElseAnswer.rgx(dir) => IsToo(dir)
     case _ => Undefined(s)
   )
 }

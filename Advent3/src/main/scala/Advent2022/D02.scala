@@ -15,12 +15,12 @@ private[this] object D02 extends D {
     |B X
     |C Z""".stripMargin
   this.input.linesIterator.map { s => 
-    val List(a, ' ', x) = s.toList
+    val List(a, _, x) = s.toList
     p2.indexOf(x) + 1 + 3 * ((p2.indexOf(x) - p1.indexOf(a) + 4) % 3)
   }.sum.part
 
   this.input.linesIterator.map { s =>
-    val List(a, ' ', x) = s.toList
+    val List(a, _, x) = s.toList
     3 * p2.indexOf(x) + (p1.indexOf(a) + p2.indexOf(x) + 2) % 3 + 1
   }.toList.sum.part
 }
