@@ -17,7 +17,7 @@ private[this] object D05 extends D {
     |move 1 from 1 to 2""".stripMargin
   
   val Array(setup, rawMoves) = this.input.split("\n\n")
-  val len = 9
+  val len = setup.split("\n").last.trim.split("\\s+").last.toInt
   val crates =
     val a = ArrayBuffer.fill(len)(List.empty[Char])
     setup.linesIterator.toList.init.reverse foreach { s =>
