@@ -32,13 +32,13 @@ private[this] object D05 extends D {
   val moves = rawMoves.split("\n").map { case parseMove(n, l, r) => (n.toInt, l.toInt - 1, r.toInt - 1) }
 
   moves.foldLeft(crates) { case (a, (n, l, r)) =>
-    val (moved, rest_l) = a(l).splitAt(n)
+    val (moved, rest_l) = a(l) splitAt n
     a.updated(l, rest_l)
      .updated(r, moved reverse_::: a(r))
   }.map(_.head).mkString.part
 
   moves.foldLeft(crates) { case (a, (n, l, r)) =>
-    val (moved, rest_l) = a(l).splitAt(n)
+    val (moved, rest_l) = a(l) splitAt n
     a.updated(l, rest_l)
      .updated(r, moved ::: a(r))
   }.map(_.head).mkString.part

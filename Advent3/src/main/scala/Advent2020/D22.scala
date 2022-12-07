@@ -8,7 +8,7 @@ import scala.util.{Failure, Success, Try}
 import scala.language.implicitConversions
 
 object D22 extends D {
-  type Deck = Queue[Int]
+  type Deck = Queue[Long]
 //  override val input =
   """Player 1:
     |9
@@ -23,7 +23,7 @@ object D22 extends D {
     |4
     |7
     |10""".stripMargin
-  val players = input.split("\n\n").toSeq.map(_.linesIterator.drop(1).map(_.toInt).to[Deck](Queue))
+  val players = Input.str.split("\n\n").toSeq.map(_.linesIterator.drop(1).map(_.toLong).to[Deck](Queue))
   case class GameOver(players: Seq[Deck]) extends Exception(
     players.flatten.reverse.zipWithIndex.map { case (card, i) => card * (i+1) }.sum.toString
   )

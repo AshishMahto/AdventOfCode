@@ -9,13 +9,14 @@ import scala.util.matching.Regex
 import java.nio.file.{Files, Path, StandardOpenOption}
 import requests.RequestBlob.FormEncodedRequestBlob
 
+import scala.annotation.targetName
 import scala.util.Try
 
 //noinspection ScalaUnusedSymbol
 trait Helpers { self =>
   protected var debug_print: Boolean = true
   private var level = 0
-  type ValidAnswer = Int | String
+  type ValidAnswer = Int | Long | String
   extension[T] (x: T)
     def thenDo(f: T => Unit): T =
       f(x)
@@ -28,6 +29,18 @@ trait Helpers { self =>
         case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response ="))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => ()
+  extension (x: Int)
+    @targetName("modulus")
+    def %%(y: Int) = java.lang.Math.floorMod(x, y)
+    def thousand: Int = x * 1000
+    def million: Int = x * 1000_000
+    def billion: Int = x * 1000_000_000
+  extension (x: Long)
+    @targetName("modulusL")
+    def %%(y: Long) = java.lang.Math.floorMod(x, y)
+    def thousand: Long = x * 1000
+    def million: Long = x * 1000_000
+    def billion: Long = x * 1000_000_000
   def pLines(ls: Any*): Unit = if (debug_print) ls foreach println
   def time[R](block: => R): R =
     val t0 = nanoTime()
@@ -51,14 +64,19 @@ trait D extends Helpers:
   private val inFile = new File(s"dir$year${\}day$day0.inp.txt")
   private def adventURL(s: String = "") = s"https://adventofcode.com/$year/day/$day/$s".stripSuffix("/")
 
-  val input = if inFile.exists() then Files readString inFile.toPath else sesh.get(adventURL("input")).text()
+  protected val input: String = null
+  private val input0: String = 
+    if input != null        then input 
+    else if inFile.exists() then Files readString inFile.toPath 
+    else                         sesh.get(adventURL("input")).text()
 
   object Input:
-    lazy val nums = raw"\d+".r findAllIn input map (_.toInt)
-    lazy val lines = input.linesIterator.toList
+    lazy val str: String = input0.trim
+    lazy val nums = raw"\d+".r findAllIn input0 map (_.toInt)
+    lazy val lines = input0.linesIterator.toList
 
   import scala.jdk.CollectionConverters._
-  private[Shared] def answer(level: Int, answer: String) = if input.count(_ == '\n') < 100 then Some(Answer.SampleInput) else
+  private[Shared] def answer(level: Int, answer: String) = if input != null then Some(Answer.SampleInput) else
     val lookFor = "(?<=<p>)[^<]+".r
     val outFile = new File(s"dir$year${\}day$day0-$level.outs.txt")
     val txt = if !outFile.exists() then
@@ -73,7 +91,7 @@ trait D extends Helpers:
       }
 
   if !inFile.getParentFile.isDirectory then inFile.getParentFile.mkdir()
-  if !inFile.exists() then Files.writeString(inFile.toPath, input, StandardOpenOption.CREATE_NEW)
+  if !inFile.exists() && null == input then Files.writeString(inFile.toPath, input0, StandardOpenOption.CREATE_NEW)
 
   def main(args: Array[String]): Unit = ()
 
