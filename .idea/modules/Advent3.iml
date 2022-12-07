@@ -13,7 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../Advent3/src/main/scala" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../Advent3/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="azul-19" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: com.lihaoyi:geny_3:0.6.10:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:requests_3:0.7.1:jar" level="project" />

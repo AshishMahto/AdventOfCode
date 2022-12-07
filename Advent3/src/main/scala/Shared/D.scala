@@ -65,7 +65,7 @@ trait D extends Helpers:
   private def adventURL(s: String = "") = s"https://adventofcode.com/$year/day/$day/$s".stripSuffix("/")
 
   protected val input: String = null
-  private val input0: String = 
+  private lazy val input0: String = 
     if input != null        then input 
     else if inFile.exists() then Files readString inFile.toPath 
     else                         sesh.get(adventURL("input")).text()
