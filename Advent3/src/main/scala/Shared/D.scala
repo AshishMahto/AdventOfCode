@@ -28,6 +28,8 @@ trait Helpers { self =>
         case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response ="))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => ()
+  extension [T](ls: IndexedSeq[T])
+    def at(i: Int) = if ls.indices contains i then Some(ls(i)) else None
   extension (x: Int)
     @targetName("modulus")
     def %%(y: Int) = java.lang.Math.floorMod(x, y)
