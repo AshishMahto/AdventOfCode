@@ -5,41 +5,20 @@ import Shared.D
 import scala.collection.mutable.ArrayBuffer
 
 private[this] object D05 extends D {
-//  override val input =
-  """[D]        
-    |[N] [C]    
-    |[Z] [M] [P]
-    | 1   2   3 
-    |
-    |move 1 from 2 to 1
-    |move 3 from 1 to 3
-    |move 2 from 2 to 1
-    |move 1 from 1 to 2""".stripMargin
-  
-  val Array(setup, rawMoves) = this.input.split("\n\n")
-  val len = setup.split("\n").last.trim.split("\\s+").last.toInt
-  val crates =
-    val a = ArrayBuffer.fill(len)(List.empty[Char])
-    setup.linesIterator.toList.init.reverse foreach { s =>
-      0 until len foreach { i =>
-        if s(4 * i + 1) != ' ' then
-          a(i) ::= s(4 * i + 1)
-      }
-    }
-    a.toVector
+  val Array(setup, rawMoves) = Input.str.split("\n\n")
 
-  val parseMove = raw"move (\d+) from (\d+) to (\d+)".r
-  val moves = rawMoves.split("\n").map { case parseMove(n, l, r) => (n.toInt, l.toInt - 1, r.toInt - 1) }
+  // See: https://www.reddit.com/r/adventofcode/comments/zdqmn2/2022_day_5scala_while_yall_were_complaining_about/
+  val crates = setup.split("\n").toList.transpose.collect { case s if s.last.isDigit => s.dropWhile(_.isWhitespace) }
+  val moves = rawMoves.split("\n").map { case s"move $n from $l to $r" => (n.toInt, l.toInt - 1, r.toInt - 1) }
 
-  moves.foldLeft(crates) { case (a, (n, l, r)) =>
+  type Concat[T] = (List[T], List[T]) => List[T]
+  def go(concat: Concat[Char]) = moves.foldLeft(crates) { case (a, (n, l, r)) =>
     val (moved, rest_l) = a(l) splitAt n
     a.updated(l, rest_l)
-     .updated(r, moved reverse_::: a(r))
-  }.map(_.head).mkString.part
+     .updated(r, concat(moved, a(r)))
+  }.map(_.head).mkString
 
-  moves.foldLeft(crates) { case (a, (n, l, r)) =>
-    val (moved, rest_l) = a(l) splitAt n
-    a.updated(l, rest_l)
-     .updated(r, moved ::: a(r))
-  }.map(_.head).mkString.part
+  go(_ reverse_::: _).part
+
+  go(_ ::: _).part
 }

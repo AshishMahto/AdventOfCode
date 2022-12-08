@@ -12,7 +12,6 @@ import requests.RequestBlob.FormEncodedRequestBlob
 import scala.annotation.targetName
 import scala.util.Try
 
-//noinspection ScalaUnusedSymbol
 trait Helpers { self =>
   protected var debug_print: Boolean = true
   private var level = 0
@@ -54,10 +53,8 @@ trait Helpers { self =>
     case _  => true
 }
 
-//noinspection ScalaUnusedSymbol
 trait D extends Helpers:
-  private val cookie = "session=***REMOVED***"
-  private val sesh = requests.Session(headers = Map("cookie" -> cookie))
+  private val sesh = requests.Session(headers = Map("cookie" -> Secrets.cookie))
   private val (year, day, day0) =
     val Seq(year, day) = raw"\d+".r findAllIn this.getClass.getName to Seq
     (year, day.stripPrefix("0"), f"${day.toInt}%02d")

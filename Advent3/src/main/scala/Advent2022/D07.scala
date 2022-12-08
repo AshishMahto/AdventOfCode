@@ -20,7 +20,6 @@ private[this] object D07 extends D {
     override      val p1 =  (if size < 100000     then size else 0            )  +  ls.view.map(_.p1).sum
     override lazy val p2 = ((if size > needToFree then size else Long.MaxValue) :: ls.toList.map(_.p2)).min
 
-  val cd = ". cd (.+)".r
   val file = "(dir|[0-9]+) (.+)".r
 
   /** Could be purely functional using IO monad, but a bit of encapsulated mutability is scalactic :) */
@@ -29,7 +28,7 @@ private[this] object D07 extends D {
     lines.removeHead() // always ls
     val files = lines removeHeadWhile file.matches collect { case file(sz, name) if sz != "dir" => File(name, sz.toLong) }
     val dirs = Iterator.unfold(-1) { state =>
-      lines.removeHeadOption() collect { case cd(dirName) if dirName != ".." => (create(dirName), state) }
+      lines.removeHeadOption() collect { case s"$$ cd $dirName" if dirName != ".." => (create(dirName), state) }
     }
     Dir(dirName, files ++ dirs)
 
