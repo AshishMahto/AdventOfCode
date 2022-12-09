@@ -28,9 +28,14 @@ private[this] object D09 extends D {
       else State(head, this.head :: tails)
     def move2(head: P = head): State =
       val (tails9, visited) = tails.splitAt(9)
+      val _ :: newTails9 = tails9.foldLeft(List(head)) { case (ls, tail) =>
+        val newTail = if dist(ls.head, tail) <= 1 then tail else ls.head.zip(tail).map { case (a, b) => b + (a - b).sign }
+        newTail :: ls
+      }.reverse: @unchecked
+      State(head, newTails9 ::: newTails9.last :: visited)
 
   object State:
-    @targetName("apply1") def apply(head: P = List(0, 0), tail: P = List(0, 0)) = new State(head, List.fill(10)(tail))
+    @targetName("apply1") def apply(head: P = P(0, 0), tail: P = P(0, 0)) = new State(head, List.fill(10)(tail))
 
   def go(move: (State, P) => State): State = returning {
     Input.lines.foldLeft(State()) {
@@ -38,20 +43,6 @@ private[this] object D09 extends D {
       case _ => throw IllegalArgumentException()
     }
   }
-
-  def print_board(state: State) = if this.input == null then () else
-    val s = state.head +: state.tails
-    val min = s.transpose.map(_.min)
-    val max = s.transpose.map(_.max)
-    min(1) to max(1) map { y =>
-      min(0) to max(0) map { x =>
-        val p = Seq(x,y)
-        if state.head == p then 'H'
-        else if state.tail == p then 'T'
-        else if state.tails contains Seq(x,y) then '#' 
-        else '.'
-      } mkString ""
-    } mkString ("board =\n", "\n", "\n") thenDo println
 
   go(_ move _).tails.toSet.size.part
   go(_ move2 _).tails.drop(8).toSet.size.part
