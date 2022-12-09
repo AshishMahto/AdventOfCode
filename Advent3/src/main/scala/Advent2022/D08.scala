@@ -38,15 +38,17 @@ private[this] object D08 extends D {
         case _ => count -> None
       }
       case None => None
-    }.lastOption.getOrElse(0)
+    }.lastOption
 
-  v.indices.flatMap { x =>
-    v(x).indices map { y =>
-      val posn = Vector(x, y)
-      look2(posn, Vector( 0,  1)) * 
-      look2(posn, Vector( 0, -1)) * 
-      look2(posn, Vector( 1,  0)) * 
-      look2(posn, Vector(-1,  0))
-    }
+  {
+    for {
+      x <- v.indices
+      y <- v(x).indices
+      posn = Vector(x, y)
+      a <- look2(posn, Vector( 0,  1))
+      b <- look2(posn, Vector( 0, -1))
+      c <- look2(posn, Vector( 1,  0))
+      d <- look2(posn, Vector(-1,  0))
+    } yield a * b * c * d
   }.max.part
 }
