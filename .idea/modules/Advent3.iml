@@ -13,10 +13,12 @@
       <sourceFolder url="file://$MODULE_DIR$/../../Advent3/src/main/scala" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../Advent3/target" />
     </content>
-    <orderEntry type="jdk" jdkName="azul-19" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:fansi_3:0.4.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:geny_3:0.6.10:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:requests_3:0.7.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:sourcecode_3:0.3.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.10:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.2.1:jar" level="project" />
   </component>

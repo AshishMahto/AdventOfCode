@@ -14,6 +14,7 @@ lazy val Advent3 = project.in(file("Advent3")).settings(
   scalaVersion := "3.2.1",
   libraryDependencies ++= Seq(
     "com.lihaoyi" %% "requests" % "0.7.1",
+    "com.lihaoyi" %% "fansi" % "0.4.0",
   ),
   scalacOptions ++= Seq(
   ),
