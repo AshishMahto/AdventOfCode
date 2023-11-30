@@ -10,24 +10,10 @@ import scala.util.{Failure, Success, Try}
 import scala.language.implicitConversions
 
 object D22 extends D {
-  type Deck = Queue[Long]
+  type Deck = Queue[Int]
   type Decks = Seq[Deck]
   val Deck = Queue
-//  override val input =
-  """Player 1:
-    |9
-    |2
-    |6
-    |3
-    |1
-    |
-    |Player 2:
-    |5
-    |8
-    |4
-    |7
-    |10""".stripMargin
-  val players = Input.str.split("\n\n").toSeq.map(_.linesIterator.drop(1).map(_.toLong).to(Deck))
+  val players = Input.str.split("\n\n").toSeq.map(_.linesIterator.drop(1).map(_.toInt).to(Deck))
 
   case class GameOver(players: Decks) extends Exception(
     players.flatten.reverse.zipWithIndex.map { case (card, i) => card * (i+1) }.sum.toString
@@ -36,9 +22,8 @@ object D22 extends D {
     override def toString = s"GameOver($players, winner = ${if (p1Win) 1 else 2})"
   }
 
-  object Deque {
+  object Deque:
     def unapply(queue: Deck) = queue.dequeueOption
-  }
 
   @tailrec
   def game1(players: Decks): GameOver = players match {
@@ -50,10 +35,11 @@ object D22 extends D {
 
   game1(players).getMessage.part
 
-  val default = Seq(Deck(1L), Deck())
-  val seen = mutable.Map[List[Decks], GameOver]()
-
-  case class Game()
+  val default = GameOver(Seq(Deck(1), Deck()))
+  type Key = (Decks, Int)
+  val seen = mutable.Set[Key]()
+  @inline
+  def key(decks: List[Decks]): Key = (decks.head, decks.length) // takes a long time to hash List[Decks]
 
   /** Compute a GameOver.
     * @param games The stack of games; first is the finished game, second is the next game.
@@ -76,21 +62,18 @@ object D22 extends D {
   @tailrec
   def go(games: List[Decks]): Nothing = {
     val players :: restGames = games: @unchecked
-    if (seen.contains(games)) go(nextGame(games, seen(games)))
+    if (seen(key(games))) go(nextGame(games, default))
     else if (players.exists(_.isEmpty)) go(nextGame(games, GameOver(players)))
     else {
-      seen(games) = GameOver(default)
+      seen += key(games)
       val Seq(Deque(p1, p1deck), Deque(p2, p2deck)) = players: @unchecked
-//      println(s"${"  " * restGames.length}round = ${players(0)}\n${"  " * restGames.length}        ${players(1)}".stripMargin)
-      if (p1 <= p1deck.length && p2 <= p2deck.length)
-        go(Seq(p1deck take p1.toInt, p2deck take p2.toInt) :: games)
-      else if (p1 > p2) {
-        go(Seq(p1deck enqueueAll Seq(p1, p2), p2deck) :: restGames)
-      } else {
-        go(Seq(p1deck, p2deck enqueueAll Seq(p2, p1)) :: restGames)
-      }
+      if (p1 <= p1deck.size && p2 <= p2deck.size) go(Seq(p1deck take p1, p2deck take p2) :: games)
+      else if (p1 > p2)                           go(Seq(p1deck enqueueAll Seq(p1, p2), p2deck) :: restGames)
+      else                                        go(Seq(p1deck, p2deck enqueueAll Seq(p2, p1)) :: restGames)
     }
   }
 
-  Try(go(List(players))).failed.get.getMessage.part
+  time {
+    Try(go(List(players))).failed.get.getMessage.part
+  }
 }
