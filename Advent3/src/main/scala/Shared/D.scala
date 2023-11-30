@@ -28,20 +28,6 @@ trait Helpers { self =>
         case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response ="))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => ()
-  extension [T](ls: IndexedSeq[T])
-    def at(i: Int) = if ls.indices contains i then Some(ls(i)) else None
-  extension (x: Int)
-    @targetName("modulus")
-    def %%(y: Int) = java.lang.Math.floorMod(x, y)
-    def thousand: Int = x * 1000
-    def million: Int = x * 1000_000
-    def billion: Int = x * 1000_000_000
-  extension (x: Long)
-    @targetName("modulusL")
-    def %%(y: Long) = java.lang.Math.floorMod(x, y)
-    def thousand: Long = x * 1000
-    def million: Long = x * 1000_000
-    def billion: Long = x * 1000_000_000
   def pLines(ls: Any*): Unit = if (debug_print) ls foreach println
   def time[R](block: => R): R =
     val t0 = nanoTime()
@@ -56,15 +42,17 @@ trait Helpers { self =>
 }
 
 trait D extends Helpers:
-  private val sesh = requests.Session(headers = Map("cookie" -> Secrets.cookie))
+  private val sesh = requests.Session(headers = Map("cookie" -> s"session=${Secrets.cookie}"))
   private val (year, day, day0) =
     val Seq(year, day) = raw"\d+".r findAllIn this.getClass.getName to Seq
     (year, day.stripPrefix("0"), f"${day.toInt}%02d")
   private val inFile = new File(s"dir$year${\}day$day0.inp.txt")
   private def adventURL(s: String = "") = s"https://adventofcode.com/$year/day/$day/$s".stripSuffix("/")
 
+  /** Override this value if you want to try example input. */
   protected val input: String = null
-  private lazy val input0: String = 
+
+  private lazy val input0: String =
     if input != null        then input 
     else if inFile.exists() then Files readString inFile.toPath 
     else                         sesh.get(adventURL("input")).text()

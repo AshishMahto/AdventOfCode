@@ -8,6 +8,10 @@ import scala.collection.{Factory, MapFactory, mutable}
 private[this] object D08 extends D {
   val v = Input.lines.view.map { s => s.map { c => c.toString.toInt } }.toVector
   val seen = v.map { s => ArrayBuffer.from(s.map(_ => 0)) }
+
+  extension [T](ls: IndexedSeq[T])
+    def at(i: Int) = if ls.indices contains i then Some(ls(i)) else None
+
   def tree(index: Vector[Int]) = v.at(index(0)).flatMap(_.at(index(1)))
   def seen_update(index: Vector[Int], t: Int): Unit = seen.at(index(0)).foreach { m => m(index(1)) = t }
   def add(a: Vector[Int], b: Vector[Int]) = a zip b map { _ + _ }

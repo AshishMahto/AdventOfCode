@@ -5,7 +5,7 @@
       <configuration sdkName="Python 3.10" />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_19">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
     <output url="file://$MODULE_DIR$/../../target/scala-2.13/classes" />
     <output-test url="file://$MODULE_DIR$/../../target/scala-2.13/test-classes" />
     <exclude-output />
@@ -19,8 +19,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: com.chuusai:shapeless_2.13:2.3.10:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:fansi_2.13:0.4.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.lihaoyi:fastparse_2.13:2.3.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.lihaoyi:geny_2.13:0.6.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:fastparse_2.13:3.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:geny_2.13:1.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:sourcecode_2.13:0.3.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.1:jar" level="project" />
   </component>
