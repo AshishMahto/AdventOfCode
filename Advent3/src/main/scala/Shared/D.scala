@@ -10,28 +10,35 @@ import java.nio.file.{Files, Path, StandardOpenOption}
 import requests.RequestBlob.FormEncodedRequestBlob
 
 import scala.annotation.targetName
+import scala.collection.mutable
+import scala.collection.immutable.Map
 import scala.util.Try
 
 trait Helpers { self =>
   protected var debug_print: Boolean = true
   private var level = 0
   type ValidAnswer = Int | Long | String
+
   extension[T] (x: T)
     def thenDo(f: T => Unit): T =
       f(x)
       x
-    def pr(pfx: String = ""): Unit = if (debug_print) println(pfx + " " + x)
+    def pr(pfx: String = ""): Unit = if (debug_print) println(pfx + x)
     def part: Unit =
       level += 1
       println(s"Part $level Answer: " + x)
       (self, x) match
-        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response ="))
+        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response = "))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => ()
+
+  extension[T] (s: Iterable[T])
+    def freqMap: Map[T, Int] = s.groupMapReduce(identity)(_ => 1)(_ + _)
   def pLines(ls: Any*): Unit = if (debug_print) ls foreach println
   def time[R](block: => R): R =
     val t0 = nanoTime()
     try block finally ((nanoTime() - t0) / 1e9).pr("Time: ")
+
   // truthy
   given Conversion[Try[?], Boolean] = _.isSuccess
   given Conversion[Iterable[?], Boolean] = _.nonEmpty
