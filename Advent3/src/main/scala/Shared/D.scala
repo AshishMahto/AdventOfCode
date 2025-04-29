@@ -30,7 +30,7 @@ trait Helpers { self =>
       (self, x) match
         case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response = "))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
-        case _                      => ()
+        case _                      => () // only works inside a D
 
   extension[T] (s: Iterable[T])
     def freqMap: Map[T, Int] = s.groupMapReduce(identity)(_ => 1)(_ + _)
@@ -54,6 +54,7 @@ trait D extends Helpers:
     val Seq(year, day) = raw"\d+".r findAllIn this.getClass.getName to Seq
     (year, day.stripPrefix("0"), f"${day.toInt}%02d")
   private val inFile = new File(s"dir$year${\}day$day0.inp.txt")
+  private def outFile(level: Int) = new File(s"dir$year${\}day$day0-$level.outs.txt")
   private def adventURL(s: String = "") = s"https://adventofcode.com/$year/day/$day/$s".stripSuffix("/")
 
   /** Override this value if you want to try example input. */
@@ -66,13 +67,14 @@ trait D extends Helpers:
 
   object Input:
     lazy val str: String = input0.trim
-    lazy val nums = raw"\d+".r findAllIn input0 map (_.toInt)
+    lazy val nums = raw"\d+".r findAllIn input0 map Integer.parseInt to List
     lazy val lines = input0.linesIterator.toList
+    def linesOfNums(toSplit: String = "\\s+") = lines map { ln => raw"\d+".r findAllIn ln map (_.toInt) to List }
 
   import scala.jdk.CollectionConverters._
   private[Shared] def answer(level: Int, answer: String) = if input != null then Some(Answer.SampleInput) else
     val lookFor = "(?<=<p>)[^<]+".r
-    val outFile = new File(s"dir$year${\}day$day0-$level.outs.txt")
+    val outFile = this.outFile(level)
     val txt = if !outFile.exists() then
       outFile.createNewFile()
       collection.mutable.Buffer.empty[String]
@@ -93,7 +95,7 @@ sealed trait Answer
 object Answer {
   case class Wait(seconds: Int) extends Answer
   object Wait:
-    val rgx = raw"You gave an answer too recently; you have to wait after submitting an answer before trying again\.  You have (\d+)m (\d+)s left to wait\.".r
+    val rgx = raw"You gave an answer too recently; you have to wait after submitting an answer before trying again\.  You have (?:(\d+)m )?(\d+)s left to wait\.".r
   case class Undefined(p: String) extends Answer
   sealed trait SimpleAnswer(val text: String) extends Answer
   case object NotRight extends SimpleAnswer("That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the ")
@@ -103,13 +105,14 @@ object Answer {
   object IsToo:
     val rgx = raw"That's not the right answer; your answer is too ([a-z]+)\.  If you're stuck, make sure you're using the full input data; there are also some general tips on the ".r
   object SomeoneElseAnswer:
-    val rgx = raw"That's not the right answer; your answer is too ([a-z]+)\.  Curiously, it's the right answer for someone else; you might be logged in to the wrong account or just unlucky. In any case, you need to be using ".r
+    val rgx = raw"That's not the right answer; your answer is too ([a-z]+)\.  Curiously, it's the right answer for someone else; you might be logged in to the wrong account or just unlucky\. In any case, you need to be using ".r
   object SimpleAnswer:
     val all = List[SimpleAnswer](NotRight, Correct, WrongLevel)
   case object SampleInput extends Answer
 
   def from(s: String): Answer = SimpleAnswer.all.find(s == _.text).getOrElse(s match
     case Wait.rgx(minutes, seconds) => Wait(60 * minutes.toInt + seconds.toInt)
+    case Wait.rgx(seconds) => Wait(seconds.toInt)
     case IsToo.rgx(dir) => IsToo(dir)
     case SomeoneElseAnswer.rgx(dir) => IsToo(dir)
     case _ => Undefined(s)
