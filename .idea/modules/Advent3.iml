@@ -2,7 +2,7 @@
 <module external.linked.project.id="Advent3 [file:/Users/AXM3YC9/AdventOfCode/]" external.linked.project.path="$MODULE_DIR$/../../Advent3" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.10" />
+      <configuration sdkName="Python 3.12" />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
@@ -21,5 +21,6 @@
     <orderEntry type="library" name="sbt: com.lihaoyi:sourcecode_3:0.3.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.10:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.2.1:jar" level="project" />
+    <orderEntry type="library" name="Python 3.12 interpreter library" level="application" />
   </component>
 </module>
