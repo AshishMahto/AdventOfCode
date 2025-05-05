@@ -4,7 +4,7 @@ import Shared.D
 
 import scala.collection.mutable.ArrayBuffer
 
-private[this] object D05 extends D {
+private object D05 extends D {
   val Array(setup, rawMoves) = Input.str.split("\n\n")
 
   // See: https://www.reddit.com/r/adventofcode/comments/zdqmn2/2022_day_5scala_while_yall_were_complaining_about/

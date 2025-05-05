@@ -6,9 +6,9 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math.Ordering.Implicits.seqOrdering
 
-private[this] object D08 extends D {
+private object D08 extends D {
 //  override protected val input = "RL\n\nAAA = (BBB, CCC)\nBBB = (DDD, EEE)\nCCC = (ZZZ, GGG)\nDDD = (DDD, DDD)\nEEE = (EEE, EEE)\nGGG = (GGG, GGG)\nZZZ = (ZZZ, ZZZ)"
-  val lr :: _ :: graph0 = Input.lines
+  val lr :: _ :: graph0 = Input.lines: @unchecked
   val graph = graph0.map(_.split(" = ") match {
     case Array(a, uv) =>
       val List(l, r) = "\\w{3}".r.findAllIn(uv).toList

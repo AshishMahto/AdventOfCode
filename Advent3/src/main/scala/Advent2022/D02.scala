@@ -7,7 +7,7 @@ import Shared.D
 //Caused by: requests.RequestFailedException: Request to https://adventofcode.com/2022/day/2/answer failed with status code 400
 //You're posting too much data.
 
-private[this] object D02 extends D {
+private object D02 extends D {
   val p1 = "ABC"
   val p2 = "XYZ"
 //  override val input = 

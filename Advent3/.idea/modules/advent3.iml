@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="Advent3 [file:/Users/AXM3YC9/AdventOfCode/]" external.linked.project.path="$MODULE_DIR$/../../Advent3" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="advent3 [file:/Users/AXM3YC9/AdventOfCode/Advent3/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21">
-    <output url="file://$MODULE_DIR$/../../Advent3/target/scala-3.3.5/classes" />
-    <output-test url="file://$MODULE_DIR$/../../Advent3/target/scala-3.3.5/test-classes" />
+    <output url="file://$MODULE_DIR$/../../target/scala-3.3.5/classes" />
+    <output-test url="file://$MODULE_DIR$/../../target/scala-3.3.5/test-classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../Advent3">
-      <sourceFolder url="file://$MODULE_DIR$/../../Advent3/src/main/scala" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../Advent3/target" />
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/scala" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="sbt: scala-sdk-3.3.5" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:fansi_3:0.5.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:geny_3:1.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:requests_3:0.9.0:jar" level="project" />

@@ -2,7 +2,7 @@ package Advent2022
 
 import Shared.D
 
-private[this] object D07 extends D {
+private object D07 extends D {
 
   sealed trait Tree:
     val size: Long

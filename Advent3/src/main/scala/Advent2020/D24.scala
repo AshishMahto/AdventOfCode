@@ -4,7 +4,7 @@ import Shared.D
 
 import scala.collection.mutable.ArrayBuffer
 
-private[this] object D24 extends D {
+private object D24 extends D {
   case class Pos(y: Int, x: Int) {
     def +(pos: Pos) = Pos(y + pos.y, x + pos.x)
   }

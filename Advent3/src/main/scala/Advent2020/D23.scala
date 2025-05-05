@@ -7,7 +7,7 @@ import scala.annotation.targetName
 import scala.collection.mutable
 import scala.language.implicitConversions
 
-private[this] object D23 extends D {
+private object D23 extends D {
   def go(v: IndexedSeq[Long], moves: Long) =
     val linked = mutable.Map.from(v.indices map { i => v(i) -> v((i + 1) % v.length) })
     def split(start: Long, n: Long) = 

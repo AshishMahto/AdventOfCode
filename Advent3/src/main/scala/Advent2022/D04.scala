@@ -2,7 +2,7 @@ package Advent2022
 
 import Shared.D
 
-private[this] object D04 extends D {
+private object D04 extends D {
 //  override val input = 
   """2-4,6-8
     |2-3,4-5

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <option name="implicitConversions" value="true" />
-    <profile name="sbt 1" modules="adventofcode">
-      <option name="implicitConversions" value="true" />
-      <option name="higherKinds" value="true" />
-    </profile>
-    <profile name="sbt 2" modules="Advent2021,Advent3,AdventOfCode,Shared3,scala.Advent2021,src3.Advent3" />
+    <profile name="sbt 1" modules="Advent3,AdventOfCode,adventofcode_7554" />
   </component>
 </project>

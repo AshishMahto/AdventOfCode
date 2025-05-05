@@ -2,7 +2,7 @@ package Advent2024
 
 import Shared.D
 
-private[this] object D04 extends D {
+private object D04 extends D {
 //  override protected val input =
   """MMMSXXMASM
     |MSAMXMSMSA

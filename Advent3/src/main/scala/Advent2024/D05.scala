@@ -6,7 +6,7 @@ import scala.collection.View.Updated
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
-private[this] object D05 extends D {
+private object D05 extends D {
 //  override protected val input =
   """47|53
     |97|13

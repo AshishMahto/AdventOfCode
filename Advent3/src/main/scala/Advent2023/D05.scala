@@ -4,7 +4,7 @@ import Shared.D
 
 import scala.collection.{GenIterable, mutable}
 
-private[this] object D05 extends D {
+private object D05 extends D {
 
 //  override protected val input = "seeds: 79 14 55 13\n\nseed-to-soil map:\n50 98 2\n52 50 48\n\nsoil-to-fertilizer map:\n0 15 37\n37 52 2\n39 0 15\n\nfertilizer-to-water map:\n49 53 8\n0 11 42\n42 0 7\n57 7 4\n\nwater-to-light map:\n88 18 7\n18 25 70\n\nlight-to-temperature map:\n45 77 23\n81 45 19\n68 64 13\n\ntemperature-to-humidity map:\n0 69 1\n1 0 69\n\nhumidity-to-location map:\n60 56 37\n56 93 4"
 
@@ -58,8 +58,8 @@ private[this] object D05 extends D {
 
   extension (seeds: List[Seeds]) {
     def resetLevels = seeds.map(_.copy(level = ""))
-    def transform(range: Range): List[Seeds] = seeds.flatMap(_ transform range)
-    def transform(ranges: List[Range]): List[Seeds] = ranges.foldLeft(seeds) { _ transform _ }.simplify.thenDo { s => println(s"seeds = $seeds;\nrange = ${ranges.sortBy(_.in)}\n") }
+    def transform(range: Range): List[Seeds] = seeds.flatMap(_ `transform` range)
+    def transform(ranges: List[Range]): List[Seeds] = ranges.foldLeft(seeds) { _ `transform` _ }.simplify.thenDo { s => println(s"seeds = $seeds;\nrange = ${ranges.sortBy(_.in)}\n") }
     def simplify: List[Seeds] = seeds.filter(s => s.x < s.y).sortBy(_.x).resetLevels
   }
 
@@ -67,9 +67,9 @@ private[this] object D05 extends D {
   seeds.map(maps(0).at).pr("seeds -> soil = ")
   maps.foldLeft(seeds) { case (seeds, table) => seeds map table.at }.min.thenDo(_.pr("seeds -> location = ")).part
 
-  val seeds2 = seeds.grouped(2).toList.map { case List(x, l) => Seeds(x, x + l) }.simplify
+  val seeds2 = seeds.grouped(2).toList.collect { case List(x, l) => Seeds(x, x + l) }.simplify
 
   println()
-  maps.foldLeft(seeds2) { _ transform _ }
+  maps.foldLeft(seeds2) { _ `transform` _ }
       .thenDo { s => println(s"last = $s") }.map(_.x).min.thenDo(_.pr("min = ")).part
 }

@@ -28,5 +28,5 @@ object D02 extends Shared.D {
   }
 
   games.collect { case (index, game) if game.forall(round => round <= Round.total) => index }.sum.part
-  games.map { case (i, game) => game.reduce(_ max _).power }.sum.part
+  games.map { case (i, game) => game.reduce(_ `max` _).power }.sum.part
 }

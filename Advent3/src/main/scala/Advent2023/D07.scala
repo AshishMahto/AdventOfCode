@@ -5,7 +5,7 @@ import Shared.D
 import math.Ordering.Implicits.seqOrdering
 import scala.collection.mutable
 
-private[this] object D07 extends D {
+private object D07 extends D {
 //  override protected val input = "32T3K 765\nT55J5 684\nKK677 28\nKTJJT 220\nQQQJA 483"
   val value = "A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, 2".replaceAll(", ", "").toList.reverse.zipWithIndex.toMap
   val value2 = "A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J".replaceAll(", ", "").toList.reverse.zipWithIndex.toMap

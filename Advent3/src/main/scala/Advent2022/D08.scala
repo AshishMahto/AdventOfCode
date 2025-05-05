@@ -5,7 +5,7 @@ import Shared.D
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.{Factory, MapFactory, mutable}
 
-private[this] object D08 extends D {
+private object D08 extends D {
   val v = Input.lines.view.map { s => s.map { c => c.toString.toInt } }.toVector
   val seen = v.map { s => ArrayBuffer.from(s.map(_ => 0)) }
 

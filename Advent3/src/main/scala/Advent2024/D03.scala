@@ -2,7 +2,7 @@ package Advent2024
 
 import Shared.D
 
-private[this] object D03 extends D {
+private object D03 extends D {
 //  override protected val input =
   """xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))""".stripMargin
   raw"mul\((\d{1,3}),(\d{1,3})\)".r.findAllMatchIn(Input.str).toList.map { m =>

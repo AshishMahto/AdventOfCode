@@ -16,7 +16,7 @@ object Allergen:
 
 case class Recipe(ingredients: Set[Ingredient], allergens: Set[Allergen])
 object Recipe extends Helpers:
-  def apply(ingreds: String, allergens: String) = new Recipe(Ingredient Set ingreds, Allergen Set allergens)
+  def apply(ingreds: String, allergens: String) = new Recipe(Ingredient `Set` ingreds, Allergen `Set` allergens)
 
 object D21 extends D:
   val recipes = input.split('\n').map { s =>

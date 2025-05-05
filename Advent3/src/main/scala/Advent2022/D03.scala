@@ -2,7 +2,7 @@ package Advent2022
 
 import Shared.D
 
-private[this] object D03 extends D {
+private object D03 extends D {
   Input.lines.map { s => 
     val (l, r) = s.splitAt(s.length >> 1)
     val c = l.toSet.intersect(r.toSet).head

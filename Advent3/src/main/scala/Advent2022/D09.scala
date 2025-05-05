@@ -4,7 +4,7 @@ import Shared.D
 import scala.annotation.targetName
 import scala.util.control.NonLocalReturns.*
 
-private[this] object D09 extends D {
+private object D09 extends D {
 //  override protected val input = 
   """R 4
     |U 4
@@ -44,6 +44,6 @@ private[this] object D09 extends D {
     }
   }
 
-  go(_ move _).tails.toSet.size.part
-  go(_ move2 _).tails.drop(8).toSet.size.part
+  go(_ `move` _).tails.toSet.size.part
+  go(_ `move2` _).tails.drop(8).toSet.size.part
 }

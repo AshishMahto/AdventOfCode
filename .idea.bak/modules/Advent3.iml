@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="Advent3 [file:/Users/AXM3YC9/AdventOfCode/]" external.linked.project.path="$MODULE_DIR$/../../Advent3" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Python" name="Python">
+      <configuration sdkName="Python 3.12" />
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
+    <output url="file://$MODULE_DIR$/../../Advent3/target/scala-3.2.1/classes" />
+    <output-test url="file://$MODULE_DIR$/../../Advent3/target/scala-3.2.1/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../Advent3">
+      <sourceFolder url="file://$MODULE_DIR$/../../Advent3/src/main/scala" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Advent3/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:fansi_3:0.4.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:geny_3:1.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:requests_3:0.8.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.lihaoyi:sourcecode_3:0.3.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.2.1:jar" level="project" />
+    <orderEntry type="library" name="Python 3.12 interpreter library" level="application" />
+  </component>
+</module>

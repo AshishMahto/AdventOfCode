@@ -6,26 +6,39 @@
         <option name="TAB_SIZE" value="2" />
       </value>
     </option>
+    <option name="RIGHT_MARGIN" value="200" />
+    <option name="SOFT_MARGINS" value="200" />
+    <JSCodeStyleSettings version="0">
+      <option name="USE_SEMICOLON_AFTER_STATEMENT" value="false" />
+      <option name="SPACE_BEFORE_GENERATOR_MULT" value="true" />
+      <option name="USE_DOUBLE_QUOTES" value="false" />
+      <option name="ENFORCE_TRAILING_COMMA" value="Remove" />
+      <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
+      <option name="SPACES_WITHIN_IMPORTS" value="true" />
+    </JSCodeStyleSettings>
     <ScalaCodeStyleSettings>
       <option name="classCountToUseImportOnDemand" value="4" />
       <option name="WRAP_BEFORE_WITH_KEYWORD" value="true" />
-      <option name="PLACE_SELF_TYPE_ON_NEW_LINE" value="false" />
       <option name="ALIGN_EXTENDS_WITH" value="3" />
       <option name="ALIGN_IN_COLUMNS_CASE_BRANCH" value="true" />
       <option name="INDENT_FIRST_PARAMETER_CLAUSE" value="true" />
-      <option name="BLANK_LINES_AROUND_METHOD_IN_INNER_SCOPES" value="0" />
-      <option name="KEEP_ONE_LINE_LAMBDAS_IN_ARG_LIST" value="true" />
+      <option name="SCALAFMT_REFORMAT_ON_FILES_SAVE" value="true" />
       <option name="USE_SCALADOC2_FORMATTING" value="true" />
-      <option name="SPACES_AROUND_AT_IN_PATTERNS" value="true" />
       <option name="ALIGN_PARAMETER_TYPES_IN_MULTILINE_DECLARATIONS" value="1" />
+      <option name="CALL_PARAMETERS_NEW_LINE_AFTER_LPAREN" value="2" />
       <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
       <option name="TYPE_ANNOTATION_PUBLIC_MEMBER" value="false" />
       <option name="TYPE_ANNOTATION_PROTECTED_MEMBER" value="false" />
-      <option name="TYPE_ANNOTATION_IMPLICIT_MODIFIER" value="false" />
     </ScalaCodeStyleSettings>
     <TypeScriptCodeStyleSettings version="0">
+      <option name="USE_SEMICOLON_AFTER_STATEMENT" value="false" />
+      <option name="USE_DOUBLE_QUOTES" value="false" />
+      <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
       <option name="SPACES_WITHIN_IMPORTS" value="true" />
     </TypeScriptCodeStyleSettings>
+    <editorconfig>
+      <option name="ENABLED" value="false" />
+    </editorconfig>
     <codeStyleSettings language="CSS">
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
@@ -55,6 +68,9 @@
       </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JavaScript">
+      <option name="RIGHT_MARGIN" value="170" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <option name="SPACE_BEFORE_SEMICOLON" value="true" />
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
         <option name="CONTINUATION_INDENT_SIZE" value="2" />
@@ -66,15 +82,23 @@
         <option name="INDENT_SIZE" value="2" />
         <option name="CONTINUATION_INDENT_SIZE" value="4" />
         <option name="TAB_SIZE" value="2" />
+        <option name="SMART_TABS" value="true" />
       </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="Scala">
-      <option name="KEEP_FIRST_COLUMN_COMMENT" value="true" />
-      <option name="BLANK_LINES_AROUND_METHOD" value="0" />
-      <option name="BLANK_LINES_AROUND_METHOD_IN_INTERFACE" value="0" />
-      <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
-      <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+      <option name="CALL_PARAMETERS_WRAP" value="5" />
+      <option name="CALL_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
+    </codeStyleSettings>
+    <codeStyleSettings language="TypeScript">
+      <option name="RIGHT_MARGIN" value="170" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <option name="SPACE_BEFORE_SEMICOLON" value="true" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="CONTINUATION_INDENT_SIZE" value="2" />
+        <option name="TAB_SIZE" value="2" />
+      </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="XML">
       <indentOptions>

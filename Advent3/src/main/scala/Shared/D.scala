@@ -1,46 +1,37 @@
 package Shared
 
 import java.io.File
-import java.io.File.separator as \
+import java.io.File.{separator => sep}
 import java.lang.System.nanoTime
 import java.net.HttpCookie
-import scala.io.Source
-import scala.util.matching.Regex
 import java.nio.file.{Files, Path, StandardOpenOption}
-import requests.RequestBlob.FormEncodedRequestBlob
 
-import scala.annotation.targetName
-import scala.collection.mutable
-import scala.collection.immutable.Map
-import scala.util.Try
-
+//noinspection UnitMethodIsParameterless
 trait Helpers { self =>
   protected var debug_print: Boolean = true
   private var level = 0
   type ValidAnswer = Int | Long | String
 
   extension[T] (x: T)
-    def thenDo(f: T => Unit): T =
-      f(x)
-      x
+    def thenDo(f: T => Unit): T = try x finally f(x)
     def pr(pfx: String = ""): Unit = if (debug_print) println(pfx + x)
     def part: Unit =
       level += 1
       println(s"Part $level Answer: " + x)
       (self, x) match
-        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ pr "response = "))
+        case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ `pr` "response = "))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => () // only works inside a D
 
   extension[T] (s: Iterable[T])
     def freqMap: Map[T, Int] = s.groupMapReduce(identity)(_ => 1)(_ + _)
-  def pLines(ls: Any*): Unit = if (debug_print) ls foreach println
+    def pLines: Unit = if (debug_print) s foreach println
   def time[R](block: => R): R =
     val t0 = nanoTime()
     try block finally ((nanoTime() - t0) / 1e9).pr("Time: ")
 
   // truthy
-  given Conversion[Try[?], Boolean] = _.isSuccess
+  given Conversion[util.Try[?], Boolean] = _.isSuccess
   given Conversion[Iterable[?], Boolean] = _.nonEmpty
   given Conversion[IterableOnce[?], Boolean] = _.knownSize match
     case -1 => throw IllegalArgumentException("Expected IterableOnce with knownSize")
@@ -53,8 +44,8 @@ trait D extends Helpers:
   private val (year, day, day0) =
     val Seq(year, day) = raw"\d+".r findAllIn this.getClass.getName to Seq
     (year, day.stripPrefix("0"), f"${day.toInt}%02d")
-  private val inFile = new File(s"dir$year${\}day$day0.inp.txt")
-  private def outFile(level: Int) = new File(s"dir$year${\}day$day0-$level.outs.txt")
+  private val inFile = new File(s"dir$year${sep}day$day0.inp.txt")
+  private def outFile(level: Int) = new File(s"dir$year${sep}day$day0-$level.outs.txt")
   private def adventURL(s: String = "") = s"https://adventofcode.com/$year/day/$day/$s".stripSuffix("/")
 
   /** Override this value if you want to try example input. */
@@ -62,14 +53,14 @@ trait D extends Helpers:
 
   private lazy val input0: String =
     if input != null        then input 
-    else if inFile.exists() then Files readString inFile.toPath 
+    else if inFile.exists() then Files `readString` inFile.toPath 
     else                         sesh.get(adventURL("input")).text()
 
   object Input:
     lazy val str: String = input0.trim
-    lazy val nums = raw"\d+".r findAllIn input0 map Integer.parseInt to List
+    lazy val nums = raw"\d+".r findAllIn input0 map (_.toInt) to List
     lazy val lines = input0.linesIterator.toList
-    def linesOfNums(toSplit: String = "\\s+") = lines map { ln => raw"\d+".r findAllIn ln map (_.toInt) to List }
+    lazy val linesOfNums = lines map { ln => raw"\d+".r findAllIn ln map (_.toLong) to List }
 
   import scala.jdk.CollectionConverters._
   private[Shared] def answer(level: Int, answer: String) = if input != null then Some(Answer.SampleInput) else
