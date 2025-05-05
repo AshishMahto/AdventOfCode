@@ -1,10 +1,12 @@
 package Shared
 
 import java.io.File
-import java.io.File.{separator => sep}
+import java.io.File.separator as sep
 import java.lang.System.nanoTime
 import java.net.HttpCookie
-import java.nio.file.{Files, Path, StandardOpenOption}
+import java.nio.file.{Files, StandardOpenOption}
+import Integral.Implicits.infixIntegralOps
+import Ordering.Implicits.infixOrderingOps
 
 //noinspection UnitMethodIsParameterless
 trait Helpers { self =>
@@ -23,9 +25,23 @@ trait Helpers { self =>
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => () // only works inside a D
 
-  extension[T] (s: Iterable[T])
+  extension[T](s: Iterable[T])
     def freqMap: Map[T, Int] = s.groupMapReduce(identity)(_ => 1)(_ + _)
     def pLines: Unit = if (debug_print) s foreach println
+  extension[T](ls: List[T])
+    def pairs = for
+      tail <- ls.tails if tail.nonEmpty
+      y <- tail.tail
+    yield tail.head -> y
+  def triangle(n: Int): Int = n * (n - 1) / 2
+  extension[T](s: IndexedSeq[T])
+    def pairs = new IndexedSeq[(T, T)]:
+      def inverseTriangle(n: Int) = (1 + Math.sqrt(1 + 8L * n)).toInt / 2
+      def length = triangle(s.length)
+      def apply(i: Int) =
+        val t = this.inverseTriangle(i)
+        s(i - triangle(t)) -> s(t)
+
   def time[R](block: => R): R =
     val t0 = nanoTime()
     try block finally ((nanoTime() - t0) / 1e9).pr("Time: ")
@@ -37,6 +53,17 @@ trait Helpers { self =>
     case -1 => throw IllegalArgumentException("Expected IterableOnce with knownSize")
     case 0  => false
     case _  => true
+  given Conversion[Int, Boolean] = _ != 0
+  given Conversion[Long, Boolean] = _ != 0L
+
+  def gcd[Int: Integral](a: Int, b: Int): Int =
+    var x = a min b
+    var y = a max b
+    while x != 0 do
+      val r = y % x
+      y = x
+      x = r
+    y
 }
 
 trait D extends Helpers:
@@ -62,7 +89,7 @@ trait D extends Helpers:
     lazy val lines = input0.linesIterator.toList
     lazy val linesOfNums = lines map { ln => raw"\d+".r findAllIn ln map (_.toLong) to List }
 
-  import scala.jdk.CollectionConverters._
+  import scala.jdk.CollectionConverters.*
   private[Shared] def answer(level: Int, answer: String) = if input != null then Some(Answer.SampleInput) else
     val lookFor = "(?<=<p>)[^<]+".r
     val outFile = this.outFile(level)

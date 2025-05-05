@@ -2,11 +2,7 @@ package Advent2024
 
 import Shared.D
 
-import scala.collection.View.Updated
 import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
-import scala.concurrent.{Await, Future}
-import scala.concurrent.ExecutionContext.Implicits.global
 
 private object D06 extends D {
   override val input =

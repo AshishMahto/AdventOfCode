@@ -10,3 +10,5 @@ dir2025/
 advent2022/
 !Advent3/src/main/scala/Advent2022/
 Secrets.scala
+Advent3/.idea
+.idea.bak

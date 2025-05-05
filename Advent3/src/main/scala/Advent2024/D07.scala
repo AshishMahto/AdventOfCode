@@ -18,9 +18,9 @@ private object D07 extends D {
 
   def go(ops: Set[(Long, Long) => Long]) = Input.linesOfNums.collect { case out :: x :: ys =>
     out -> ys.foldLeft(Set(x)) { (possible, y) =>
-      possible.flatMap { x => ops.map { _(x, y) }.filter(r => x.min(y) <= r && r <= out) }
+      possible.flatMap { x => ops.map { _(x, y) }.filter(_ <= out) }
     }.contains(out)
-  }.filter(_._2).map(_._1).sum
+  }.collect { case (out, true) => out } .sum
 
   go(ops).part
 
@@ -32,5 +32,5 @@ private object D07 extends D {
         b /= 10
       a + y
 
-  go(ops + (_ || _)).part
+  time(go(ops + (_ || _)).part)
 }

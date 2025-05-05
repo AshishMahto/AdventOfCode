@@ -2,9 +2,7 @@ package Advent2024
 
 import Shared.D
 
-import scala.collection.View.Updated
 import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 private object D05 extends D {
 //  override protected val input =
