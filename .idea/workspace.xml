@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="775e395e-c92f-43de-831d-95a57808740e" name="Changes" comment="fixed project">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D08.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="775e395e-c92f-43de-831d-95a57808740e" name="Changes" comment="day 8">
+      <change afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D09.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D10.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D11.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D05.scala" beforeDir="false" afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D05.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D06.scala" beforeDir="false" afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D06.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D07.scala" beforeDir="false" afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Advent2024/D07.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Advent3/src/main/scala/Shared/D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/Advent3/src/main/scala/Shared/D.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +34,17 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="AdventOfCode" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdventOfCode" type="f1a62948:ProjectNode" />
+                <item name="AdventOfCode" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdventOfCode" type="f1a62948:ProjectNode" />
+                <item name="AdventOfCode" type="2d1252cf:ModuleNode" />
+                <item name="sbt tasks" type="d9357504:SbtViewContributor$SbtTasksGroupNode" />
               </path>
             </expand>
             <select />
@@ -77,6 +86,9 @@
     "Application.D06.executor": "Run",
     "Application.D07.executor": "Run",
     "Application.D08.executor": "Run",
+    "Application.D09.executor": "Run",
+    "Application.D10.executor": "Run",
+    "Application.D11.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -96,14 +108,7 @@
       <recent name="Advent2024" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.D08">
-    <configuration name="D06" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Advent2024.D06" />
-      <module name="Advent3" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.D11">
     <configuration name="D07" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Advent2024.D07" />
       <module name="Advent3" />
@@ -118,11 +123,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="D09" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Advent2024.D09" />
+      <module name="Advent3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="D10" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Advent2024.D10" />
+      <module name="Advent3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="D11" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Advent2024.D11" />
+      <module name="Advent3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.D11" />
+        <item itemvalue="Application.D10" />
         <item itemvalue="Application.D08" />
+        <item itemvalue="Application.D09" />
         <item itemvalue="Application.D07" />
-        <item itemvalue="Application.D06" />
       </list>
     </recent_temporary>
   </component>
@@ -156,6 +184,17 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fixed project" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed project" />
+    <MESSAGE value="day 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="day 8" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

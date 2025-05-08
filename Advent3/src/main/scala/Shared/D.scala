@@ -12,7 +12,7 @@ import Ordering.Implicits.infixOrderingOps
 trait Helpers { self =>
   protected var debug_print: Boolean = true
   private var level = 0
-  type ValidAnswer = Int | Long | String
+  final type ValidAnswer = Int | Long | String
 
   extension[T] (x: T)
     def thenDo(f: T => Unit): T = try x finally f(x)
@@ -24,39 +24,41 @@ trait Helpers { self =>
         case (d: D, x: ValidAnswer) => d.answer(level, x.toString).thenDo(_.foreach(_ `pr` "response = "))
         case (d: D, _)              => println(s"answer has type ${x.getClass.getSimpleName}, which is not a ValidAnswer")
         case _                      => () // only works inside a D
+    def doPart(): Unit = part
 
   extension[T](s: Iterable[T])
     def freqMap: Map[T, Int] = s.groupMapReduce(identity)(_ => 1)(_ + _)
     def pLines: Unit = if (debug_print) s foreach println
+
   extension[T](ls: List[T])
     def pairs = for
       tail <- ls.tails if tail.nonEmpty
       y <- tail.tail
     yield tail.head -> y
-  def triangle(n: Int): Int = n * (n - 1) / 2
+  final def triangle(n: Long): Long = n * (n - 1) / 2
   extension[T](s: IndexedSeq[T])
     def pairs = new IndexedSeq[(T, T)]:
       def inverseTriangle(n: Int) = (1 + Math.sqrt(1 + 8L * n)).toInt / 2
-      def length = triangle(s.length)
+      def length = triangle(s.length).toInt
       def apply(i: Int) =
         val t = this.inverseTriangle(i)
-        s(i - triangle(t)) -> s(t)
+        s(i - triangle(t).toInt) -> s(t)
 
-  def time[R](block: => R): R =
+  final def time[R](block: => R): R =
     val t0 = nanoTime()
     try block finally ((nanoTime() - t0) / 1e9).pr("Time: ")
 
   // truthy
-  given Conversion[util.Try[?], Boolean] = _.isSuccess
-  given Conversion[Iterable[?], Boolean] = _.nonEmpty
-  given Conversion[IterableOnce[?], Boolean] = _.knownSize match
+  final given Conversion[util.Try[?], Boolean] = _.isSuccess
+  final given Conversion[Iterable[?], Boolean] = _.nonEmpty
+  final given Conversion[IterableOnce[?], Boolean] = _.knownSize match
     case -1 => throw IllegalArgumentException("Expected IterableOnce with knownSize")
     case 0  => false
     case _  => true
-  given Conversion[Int, Boolean] = _ != 0
-  given Conversion[Long, Boolean] = _ != 0L
+  final given Conversion[Int, Boolean] = _ != 0
+  final given Conversion[Long, Boolean] = _ != 0L
 
-  def gcd[Int: Integral](a: Int, b: Int): Int =
+  final def gcd[Int: Integral](a: Int, b: Int): Int =
     var x = a min b
     var y = a max b
     while x != 0 do
